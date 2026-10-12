@@ -494,6 +494,18 @@ button:focus-visible,input:focus-visible,.card:focus-visible{outline:2px solid v
 
 .bugModal{position:fixed;inset:0;z-index:260;display:none;place-items:center;background:rgba(2,4,10,.82);backdrop-filter:blur(12px);padding:16px;box-sizing:border-box}.bugModal.show{display:grid}.bugBox{width:min(520px,94vw);max-height:92vh;overflow:auto;padding:22px;border-radius:28px;background:linear-gradient(160deg,rgba(20,25,50,.98),rgba(7,12,26,.98));border:1px solid rgba(120,140,255,.35);box-shadow:0 30px 100px #000b}.bugHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.bugHead h2{margin:0;font-size:23px}.bugClose{width:40px;height:40px;border-radius:12px;border:1px solid #ffffff20;background:#ffffff0d;color:#fff;font-size:20px;cursor:pointer}.bugForm{display:grid;gap:12px}.bugForm label{display:grid;gap:6px;text-align:right;color:#dfe7ff;font-size:13px;font-weight:700}.bugForm input,.bugForm textarea,.bugForm select{width:100%;box-sizing:border-box;border:1px solid #ffffff18;border-radius:14px;background:#050914;color:#fff;padding:12px 13px;font:600 14px FGameBYekan,Arial,sans-serif;outline:none}.bugForm textarea{min-height:120px;resize:vertical;line-height:1.8}.bugForm input:focus,.bugForm textarea:focus,.bugForm select:focus{border-color:#7c5cff88;box-shadow:0 0 0 3px #7c5cff18}.bugReq{color:#ff6b6b}.bugOpt{color:#ffffff66;font-weight:500}.bugStatus{min-height:25px;text-align:center;font-size:13px;line-height:1.7}.bugSubmit{width:100%;min-height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,#7c5cff,#27cfff);color:#fff;font:900 16px FGameBYekan,Arial,sans-serif;cursor:pointer}.bugSubmit:disabled{opacity:.55;cursor:wait}.bugNote{font-size:11px;color:#ffffff66;line-height:1.8;text-align:right}
 .grid{position:relative;z-index:1;}@media(max-width:520px){.ad-secondary{min-height:250px;height:250px;margin:14px auto 18px;}.ad-secondary .yn-bnr{width:250px;max-width:250px;height:250px;min-height:250px;}}</style>
+
+<style>
+.hero,
+.toolbar,
+.ad-secondary {
+    display: none !important;
+}
+button[onclick="randomGame()"] {
+    display: none !important;
+}
+</style>
+
 </head>
 <body><span style="position:absolute;left:-99999px;top:-99999px;font-family:FGameBYekan;font-weight:400">FGame BYekan</span>
 
@@ -514,17 +526,20 @@ window.addEventListener("load", () => {
 <div class="topBtns">
 <button class="action" id="muteBtn" onclick="toggleMute()" aria-label="خاموش / روشن کردن صدا">🔊</button>
 <button class="action" id="settingsBtn" onclick="openSettings()" aria-label="تنظیمات" title="تنظیمات">⚙️</button>
-
+<button class="action" onclick="randomGame()">🎲 بازی شانسی</button>
 <button class="action" onclick="window.open('https://rubika.ir/FGameOfficial', '_blank', 'noopener,noreferrer')">📢 کانال رسمی</button>
 <button class="action" onclick="openBugReport()">🐞 گزارش باگ</button>
 <button class="action" onclick="openFGameChat()">💬 چت کاربران</button>
 <button class="action primary" onclick="shareGame()">📤 اشتراک</button>
 </div>
 </header>
-
+<section class="hero glass">
+<div><h2>بازی کن. رکورد بزن. برگرد.</h2><p>۱۷ سبک بازی متفاوت در 1000 بازی رنگی و رقابتی. با کیبورد، لمس یا حتی موس بازی کن — رکوردت روی همین دستگاه ذخیره می‌مونه.</p></div>
+<div class="heroBadge"><b>1000</b><span>بازی آماده</span></div>
+</section>
 <div class="ad-wrap"><div class="yn-bnr" id="ynpos-20162"></div></div>
-
-
+<section class="toolbar glass"><input id="search" class="search" placeholder="🔎 جست‌وجو..." oninput="render()"><div id="chips" class="chips"></div></section>
+<div class="ad-wrap ad-secondary"><div class="yn-bnr" id="ynpos-20239"></div></div>
 <section id="grid" class="grid"></section>
 <footer class="footer"><div class="trust-section"><p>نماد اعتماد</p><img src="https://cdn.aqayepardakht.ir/trustlogo/1.svg" alt=""></div><div>ساخته شده توسط <strong>نوید بلانیان</strong></div></footer>
 </div></main>
