@@ -3,7 +3,9 @@ name: Build FGame Driver APK
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    branches:
+      - main
+      - master
 
 permissions:
   contents: read
@@ -26,7 +28,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses
+        run: yes | sdkmanager --licenses || true
 
       - name: Install Android SDK packages
         run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
