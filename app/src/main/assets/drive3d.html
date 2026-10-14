@@ -20,7 +20,7 @@ canvas{display:block}
 #info{direction:ltr;unicode-bidi:isolate}
 #msg{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);font-size:22px;font-weight:700;background:#0b1024dd;padding:12px 22px;border-radius:16px;display:none;text-align:center}
 #ov{position:fixed;left:0;top:0;right:0;bottom:0;display:none;flex-direction:column;justify-content:flex-end;align-items:center;background:linear-gradient(transparent 30%,#05081af0);padding:0 12px max(14px,env(safe-area-inset-bottom))}
-.pn{width:100%;max-width:560px;max-height:92vh;display:flex;flex-direction:column;text-align:center}.hd{display:flex;justify-content:space-between;align-items:center;padding:4px 6px;font-size:18px}.bd{overflow-y:auto;touch-action:pan-y;flex:1;max-height:56vh}
+.pn{width:100%;max-width:560px;max-height:92vh;display:flex;flex-direction:column;text-align:center}.hd{display:flex;justify-content:space-between;align-items:center;padding:4px 6px;font-size:18px}.bd{overflow-y:auto;touch-action:pan-y;flex:1;max-height:56vh;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .bt{display:block;margin:8px auto;padding:11px 18px;border-radius:14px;background:#ff9a3c;color:#111;font-weight:700;font-size:17px;max-width:420px}
 .bt.g{background:#1c2540;color:#fff;border:1px solid #ffffff33}
 .sc{white-space:nowrap;overflow-x:auto;touch-action:pan-x pan-y}
@@ -302,7 +302,7 @@ function dailyStage(){let h=7;for(const c of today())h=Math.imul(h^c.charCodeAt(
 const COLS=[0xd8262f,0x2e5aa8,0xe0b020,0x2a8a5a,0x1e1e24,0xdadada,0x6a1f2e,0xff7a1a],UPS=[['eng','موتور'],['nit','نیترو'],['tir','لاستیک'],['arm','بدنه']];
 const MIS={free:['حالت آزاد','رانندگی آزاد بدون زمان؛ تعمیرگاه 🔧 در شهر هست','حالت آزاد؛ دایرهٔ نارنجی تعمیرگاه است'],cp:['چک‌پوینت','۸ دایرهٔ سبز را قبل از تمام شدن زمان بگیر','به دایرهٔ سبز برس!'],esc:['فرار از پلیس','۹۰ ثانیه از دست پلیس‌ها زنده بمان','پلیس‌ها دنبالتند! فرار کن'],
 del:['تحویل بار','بار را از نقطهٔ آبی بردار و به نقطهٔ سبز برسان. تصادف با بار خطرناک‌تر است','برو سراغ نقطهٔ آبی'],race:['مسابقه','قبل از ۳ رقیب به ۴ نقطه برس','مسابقه شروع شد!']},GOALS={cp:8,del:6};
-let GL=8,DUR=90,TF=1,RSP=22,curStage=-1,paused=0,wxF=-1,rep=null,repT=0,rpt=0,dailyRun=0,pend=null,ST={},playing=0,score=0,cpN=0,tleft=0,health=100,tgt=[0,0],mis='cp',carry=0,rs=[0,0,0],pg='main';
+let pgT=0,GL=8,DUR=90,TF=1,RSP=22,curStage=-1,paused=0,wxF=-1,rep=null,repT=0,rpt=0,dailyRun=0,pend=null,ST={},playing=0,score=0,cpN=0,tleft=0,health=100,tgt=[0,0],mis='cp',carry=0,rs=[0,0,0],pg='main';
 const up=k=>SV.up[SV.car+':'+k]||0;
 function stats(){const c=CARS.find(x=>x.id==SV.car);ST={vm:c.vm+2*up('eng'),acc:c.ac*(1+.08*up('eng')),hnd:c.hn*(1+.06*up('tir')),brk:1+.12*up('tir'),nc:1+.3*up('nit'),nr:1+.3*up('nit'),arm:c.ar*(1-.12*up('arm'))}}
 function setCar(){const c=CARS.find(x=>x.id==SV.car),col=COLS[SV.col[c.id]||0];sc.remove(me.g);me=mk(c.ty,col,0);me.g.rotation.order='YXZ';sc.add(me.g);hoodM.color.set(col);stats()}
@@ -353,7 +353,7 @@ else if(n=='set')h=[['کیفیت گرافیک',QN[SV.q],'q'],['آینه‌ها',
 else if(n=='tut')h='<div style="text-align:right;line-height:2;font-size:14px;padding:6px 10px">🟢 <b>گاز</b> و 🔴 <b>ترمز</b> سمت راست؛ دکمهٔ <b>D/R</b> دنده جلو و عقب را عوض می‌کند.<br>◀ ▶ فرمان؛ یا «فرمان گوشی» را بزن و گوشی را مثل فرمان بچرخان.<br>🔥 نیترو شتاب می‌دهد، «ترمز دستی» برای دریفت است و 📢 بوق.<br>🎥 دکمهٔ «دوربین» بین نمای بیرون و داخل ماشین عوض می‌کند.<br>🟩 به دایره‌های سبز برس. 🚓 سرعت بالا، تصادف، رد شدن از چراغ قرمز یا زدن به عابر، پلیس را تحریک می‌کند.<br>❤️ نوار سبز بالا سلامت ماشین و ★ سطح تعقیب پلیس است.</div>'+B('pend','متوجه شدم، شروع');
 else if(n=='top')h=Object.keys(MIS).map(k=>'<div class="row"><b>'+MIS[k][0]+'</b><span>'+((SV.top[k]||[]).join(' · ')||'—')+'</span></div>').join('')+B('main','بازگشت','g');
 else if(n=='end'){const nx=curStage>=0&&x.win&&curStage+1<STG.length;h='<h2 style="margin:6px">'+(x.win?'برنده شدی! 🏆':'باختی')+'</h2><div style="margin:4px;font-size:15px">'+x.why+'<br>'+(x.st?'⭐'.repeat(x.st)+'<br>':'')+'امتیاز '+Math.round(score)+' &nbsp; 💰 +'+x.rw+' &nbsp; ✨ '+x.xg+' XP'+(x.lvUp?'<br>'+x.lvUp:'')+'<br>🏅 '+x.L.join(' · ')+'</div>'+(nx?B('stg','مرحلهٔ بعد','',curStage+1):'')+B(dailyRun?'dstart':curStage>=0?'stg':'go','دوباره','',curStage>=0?curStage:mis)+B('main','منو','g')}
-const TT={camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="main" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
+const TT={camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="main" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';pgT=performance.now();ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
 function act(a,v){aud();
 if(a=='main'||a=='mis'||a=='gar'||a=='set'||a=='top'||a=='camp'||a=='daily')page(a);else if(a=='tut'){pend=['cp',{}];page('tut')}else if(a=='pend')startGame(pend[0],pend[1]);else if(a=='stg')startGame(STG[v].m,Object.assign({stage:+v},STG[v]));else if(a=='dstart')startGame(dailyStage().m,Object.assign({daily:1},dailyStage()));else if(a=='lock')say('اول مرحلهٔ قبل را ببر',1.5);else if(a=='resume'){paused=0;ov.style.display='none'}else if(a=='quit'){paused=0;playing=0;heat=0;K.gas=K.brk=0;mk2.visible=ring.visible=false;page('main')}else if(a=='go')startGame(v);
 else if(a=='car'){const c=CARS.find(x=>x.id==v);if(!SV.owned.includes(v)){if(lvOf(SV.xp)<c.lv){say('سطح '+c.lv+' لازم است',1.5);return}if(SV.money<c.p){say('پول کافی نیست',1.5);return}SV.money-=c.p;SV.owned.push(v)}SV.car=v;save();setCar();page('gar')}
@@ -362,7 +362,9 @@ else if(a=='up'){const k=SV.car+':'+v,l=SV.up[k]||0,cost=1500*(l+1);if(l>=3)retu
 else if(a=='s'){if(v=='q')SV.q=(SV.q+1)%3;else if(v=='vol'){const o=[1,.5,0];SV.vol=o[(o.indexOf(SV.vol)+1)%3]}else if(v=='sens')SV.sens=SV.sens==1?1.4:SV.sens>1?.7:1;else if(v=='wx')SV.wx=(SV.wx+1)%4;else SV[v]^=1;save();applySet();page('set')}}
 $('pz').addEventListener('pointerdown',()=>{if(playing&&!paused){paused=1;page('pause')}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing&&!paused){paused=1;page('pause')}});
-ov.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-a]');if(b){e.preventDefault();act(b.dataset.a,b.dataset.v)}});
+let pd0=null;ov.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-a]');pd0=b?{b,x:e.clientX,y:e.clientY,t:performance.now()}:null});
+ov.addEventListener('pointerup',e=>{const d=pd0;pd0=null;if(!d)return;const b=e.target.closest('[data-a]'),n=performance.now();if(b!==d.b||Math.hypot(e.clientX-d.x,e.clientY-d.y)>12||n-d.t>800||n-pgT<350)return;act(b.dataset.a,b.dataset.v)});
+ov.addEventListener('pointercancel',()=>{pd0=null});
 
 const mc=$('mm').getContext('2d');
 function drawMM(t){const k=.24,c=Math.cos(P.h),s=Math.sin(P.h);mc.setTransform(1,0,0,1,0,0);mc.clearRect(0,0,100,100);mc.save();mc.beginPath();mc.arc(50,50,50,0,6.2832);mc.clip();
