@@ -30,7 +30,15 @@ canvas{display:block}
 .row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 4px;font-size:14px}
 @media (orientation:landscape){#ov{flex-direction:row;justify-content:flex-start;align-items:center;background:linear-gradient(270deg,#05081af2 0%,#05081aee 34%,transparent 64%);padding:0 14px}.pn{max-width:46%;max-height:96vh}.bd{max-height:80vh}.bt{padding:8px 14px;font-size:15px;margin:5px auto}.cd{font-size:12px;min-width:104px;padding:6px}}
 .mn .b,.mn .t,.mn #mm,.mn #vg{display:none!important}
+#ld{position:fixed;left:0;top:0;right:0;bottom:0;z-index:99998;background:radial-gradient(circle at 50% 40%,#1b2a55,#070b1c);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .6s}
+#ld .lg{font-size:30px;font-weight:700}#ld .bar{width:220px;height:6px;border-radius:6px;background:#ffffff22;overflow:hidden}
+#ld .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff9a3c,#ffd23c);animation:ldb 3s ease-out forwards}
+@keyframes ldb{to{width:92%}}#ld small{opacity:.75;font-size:13px;padding:0 20px;text-align:center}
+#rot{display:none;position:fixed;left:0;top:0;right:0;bottom:0;z-index:99999;background:#070b1cf2;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:18px;text-align:center}
+@media (orientation:portrait){#rot{display:flex}}
 </style></head><body>
+<div id="ld"><div class="lg">🚗 اف‌گیم درایور ۳D</div><div class="bar"><i></i></div><small id="tip"></small></div><div id="rot"><div style="font-size:54px">📱↻</div>لطفاً گوشی را افقی نگه دارید</div>
+<script>document.getElementById("tip").textContent=["با نیترو سرعتت بیشتر می‌شود","از پلیس فرار کن؛ با سه ستاره سد راه می‌گذارند","روی رمپ‌ها بپر","زیر باران ماشین لیز می‌خورد","میخ‌های پلیس لاستیک را پنچر می‌کنند","در حالت آزاد، تعمیرگاه 🔧 ماشین را درست می‌کند"][Math.floor(Math.random()*6)]</script>
 <div class="t" id="heat">☆☆☆☆☆</div>
 <div class="t" id="spd">0 <small>km/h</small> <b id="grt">D</b></div>
 <a class="t" id="home" href="index.html">بازی ۲D</a>
@@ -242,7 +250,7 @@ if(dd<3.1){const nx=(P.x-o.vx)/dd,nz=(P.z-o.vz)/dd;if(!solid(P.x+nx*(3.1-dd),P.z
 if(Math.abs(P.v)>5){shake=1;dmg(Math.abs(P.v)*.7);crash(Math.abs(P.v));if(!o.cop)heat=Math.min(100,heat+15)}P.v*=.6;o.stun=.7;o.sp*=.3}
 return dd}
 // ---------- input ----------
-const K={l:0,r:0,gas:0,brk:0,nit:0,hb:0,hn:0};let mode=0,au,eng,sir,sq,rnG,wnG,hnG,mst=0,tiltOn=0,tilt=0,todMode=0,tod=.2;
+const K={l:0,r:0,gas:0,brk:0,nit:0,hb:0,hn:0};let mode=0,au,eng,sir,sq,rnG,wnG,hnG,hlG,mst=0,tiltOn=0,tilt=0,todMode=0,tod=.2;
 let nb;function aud(){if(au){au.resume();return}try{au=new(window.AudioContext||webkitAudioContext)();
 const o=au.createOscillator(),o2=au.createOscillator(),f=au.createBiquadFilter(),g=au.createGain(),g2=au.createGain();o.type='sawtooth';o2.type='square';f.type='lowpass';f.frequency.value=600;g.gain.value=.03;g2.gain.value=.4;o.connect(f);o2.connect(g2);g2.connect(f);f.connect(g);g.connect(au.destination);o.start();o2.start();eng={o,o2,f,g};
 const so=au.createOscillator(),sg=au.createGain();so.type='sine';sg.gain.value=0;so.connect(sg);sg.connect(au.destination);so.start();sir={o:so,g:sg};
@@ -250,6 +258,7 @@ const nbuf=au.createBuffer(1,au.sampleRate*2,au.sampleRate),nd=nbuf.getChannelDa
 const ns=au.createBufferSource();ns.buffer=nbuf;ns.loop=true;const hf=au.createBiquadFilter(),lf=au.createBiquadFilter();hf.type='highpass';hf.frequency.value=900;lf.type='lowpass';lf.frequency.value=380;
 rnG=au.createGain();wnG=au.createGain();rnG.gain.value=0;wnG.gain.value=0;ns.connect(hf);hf.connect(rnG);rnG.connect(au.destination);ns.connect(lf);lf.connect(wnG);wnG.connect(au.destination);ns.start();
 const h1=au.createOscillator(),h2=au.createOscillator();hnG=au.createGain();hnG.gain.value=0;h1.type=h2.type='square';h1.frequency.value=392;h2.frequency.value=494;h1.connect(hnG);h2.connect(hnG);hnG.connect(au.destination);h1.start();h2.start();setInterval(music,380);
+const ho=au.createOscillator();hlG=au.createGain();ho.type='square';ho.frequency.value=34;hlG.gain.value=0;ho.connect(hlG);hlG.connect(au.destination);ho.start();
 const q=au.createOscillator(),qg=au.createGain();q.type='sawtooth';q.frequency.value=700;qg.gain.value=0;q.connect(qg);qg.connect(au.destination);q.start();sq=qg;nb=au.createBuffer(1,au.sampleRate*.5,au.sampleRate);const d=nb.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3)}catch(e){}}
 function music(){if(!au||!SV.mus||SV.vol<=0)return;const t0=au.currentTime,N=[220,261.6,293.7,329.6,392,440,523.3],o=au.createOscillator(),g=au.createGain();o.type='triangle';o.frequency.value=N[Math.floor(Math.random()*7)]*(Math.random()<.25?.5:1);
 g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(Math.max(.0002,.035*SV.vol),t0+.06);g.gain.exponentialRampToValueAtTime(.0001,t0+1.3);o.connect(g);g.connect(au.destination);o.start(t0);o.stop(t0+1.4);
@@ -273,12 +282,12 @@ function hit(x,z,h){const fx=Math.sin(h),fz=Math.cos(h),rx=-Math.cos(h),rz=Math.
 for(const a of[-2.1,2.1])for(const b of[-.95,.95])if(solid(x+fx*a+rx*b,z+fz*a+rz*b))return 1;return 0}
 function bump(){if(Math.abs(P.v)>8){shake=Math.min(1,Math.abs(P.v)/25);heat=Math.min(100,heat+6);dmg(Math.abs(P.v)*.6);crash(Math.abs(P.v))}P.v*=-.25;P.vh=P.h}
 function stepP(dt){
-let a=0,nb2=0;if(K.gas){if(gear>0){if(P.v<(K.nit&&nitE>0?ST.vm+14:ST.vm))a+=ST.acc;if(K.nit&&nitE>0&&P.v<ST.vm+14){a+=22;nb2=1}}else if(P.v>-11)a-=9}if(nb2&&!boost)vib(40);nitE=nb2?Math.max(0,nitE-35/ST.nc*dt):Math.min(100,nitE+8*ST.nr*dt);boost=nb2;
+flat=Math.max(0,flat-dt);const VM=ST.vm*(flat>0?.65:1);let a=0,nb2=0;if(K.gas){if(gear>0){if(P.v<(K.nit&&nitE>0?VM+14:VM))a+=ST.acc;if(K.nit&&nitE>0&&P.v<VM+14){a+=22;nb2=1}}else if(P.v>-11)a-=9}if(nb2&&!boost)vib(40);nitE=nb2?Math.max(0,nitE-35/ST.nc*dt):Math.min(100,nitE+8*ST.nr*dt);boost=nb2;
 if(K.brk){if(Math.abs(P.v)>.3)a-=Math.sign(P.v)*34*ST.brk;else P.v=0}
 a-=ST.acc/(ST.vm*ST.vm)*P.v*Math.abs(P.v);if(K.hb&&P.v>10)a-=9;if(!K.gas&&!K.brk)a-=Math.sign(P.v)*2;
 P.v+=a*dt;if(!K.gas&&!K.brk&&Math.abs(P.v)<.3)P.v=0;
 const sIn=cl(K.r-K.l+(tiltOn?tilt:0),-1,1);P.steer+=(sIn-P.steer)*Math.min(1,7*dt);
-const hbk=K.hb&&P.v>10;const nh=P.h-P.v/2.7*Math.tan(P.steer*.5*ST.hnd*(hbk?1.9:1)/(1+Math.abs(P.v)*.07))*dt;if(!hit(P.x,P.z,nh))P.h=nh;
+const hbk=K.hb&&P.v>10;const nh=P.h-P.v/2.7*Math.tan(P.steer*.5*ST.hnd*(flat>0?.6:1)*(hbk?1.9:1)/(1+Math.abs(P.v)*.07))*dt;if(!hit(P.x,P.z,nh))P.h=nh;
 if(P.vh==null||P.v<4)P.vh=P.h;else P.vh+=wr(P.h-P.vh)*Math.min(1,(hbk?1.6:12*ST.hnd)*(1-.3*rain)*dt);P.slip=Math.abs(wr(P.h-P.vh));
 const fx=Math.sin(P.vh),fz=Math.cos(P.vh);let nx=P.x+fx*P.v*dt,nz=P.z+fz*P.v*dt;
 if(hit(nx,P.z,P.h)){nx=P.x;bump()}if(hit(nx,nz,P.h)){nz=P.z;bump()}
@@ -328,7 +337,7 @@ function dmg(a){if(!playing)return;vib(Math.min(250,a*8));health=Math.max(0,heal
 function take(w){if(mis=='race'){if(w){rs[w-1]++;if(rs[w-1]>=GL){endGame(0,'رقیب زودتر رسید');return}say('رقیب نقطه را گرفت',1)}else{cpN++;score+=300;if(cpN>=GL){endGame(1,'مسابقه را بردی');return}say('نقطه را گرفتی '+cpN+'/'+GL,1.2)}newTarget();return}
 cpN++;score+=500+tleft*10;health=Math.min(100,health+20);if(mis=='del')carry^=1;if(cpN>=GL){endGame(1,mis=='del'?'همهٔ بارها تحویل شد':'همهٔ نقطه‌ها را گرفتی');return}
 newTarget();say(mis=='del'?(carry?'بار برداشته شد؛ به نقطهٔ سبز برو':'تحویل شد ✓'):'نقطه '+cpN+' از '+GL+' ✓',1.5)}
-function endGame(win,why){playing=0;heat=0;K.gas=K.brk=0;mk2.visible=ring.visible=false;let rw=Math.round(score*(win?1:.4)+(win?400:0)),st=0,lvUp='';
+function endGame(win,why){playing=0;heat=0;clearCops();K.gas=K.brk=0;mk2.visible=ring.visible=false;let rw=Math.round(score*(win?1:.4)+(win?400:0)),st=0,lvUp='';
 if(curStage>=0){rw=Math.round(rw*(1+curStage*.08));if(win){st=1+(health>=50?1:0)+(health>=85?1:0);const old=SV.camp[curStage]||0;if(st>old){rw+=250*(st-old);SV.camp[curStage]=st}}}
 if(dailyRun&&win&&SV.daily!=today()){rw*=2;SV.daily=today()}
 if(win)SV.stat.wins++;const xp0=SV.xp,xg=Math.round(score/20)+(win?100:0);SV.xp+=xg;if(lvOf(SV.xp)>lvOf(xp0))lvUp='🎉 رسیدی به سطح '+lvOf(SV.xp);
@@ -344,7 +353,7 @@ if(dg<14&&Math.abs(P.v)<6){rpt+=dt;if(rpt>1.5&&(health<100||nitE<100)){health=10
 $('info').textContent='🔧 '+Math.round(dg)+' m | ❤️ '+Math.round(health)+'%'}
 function startGame(m,o){o=o||{};if(!SV.tut){SV.tut=1;save();pend=[m,o];page('tut');return}aud();mis=m;ov.style.display='none';playing=1;paused=0;score=0;cpN=0;health=100;nitE=100;tleft=0;heat=0;bust=0;carry=0;rs=[0,0,0];
 GL=o.g||GOALS[m]||8;DUR=o.d||90;TF=o.tf||1;RSP=o.rs||22;wxF=o.wx===undefined?-1:o.wx;if(o.tod)todMode=o.tod;curStage=o.stage===undefined?-1:o.stage;dailyRun=o.daily?1:0;
-P.x=-LANE;P.z=-20;P.h=0;P.vh=0;P.v=0;P.steer=0;P.y=0;P.vy=0;P.air=0;P.rv=0;gear=1;setGear();
+clearCops();P.x=-LANE;P.z=-20;P.h=0;P.vh=0;P.v=0;P.steer=0;P.y=0;P.vy=0;P.air=0;P.rv=0;gear=1;setGear();
 ais.forEach(c=>{c.off=c.race&&m!='race'?1:0;c.g.visible=!c.off;if(!c.off)spawn(c)});
 if(m=='esc'){tleft=DUR;heat=70;mk2.visible=ring.visible=false}else if(m=='free'){mk2.visible=ring.visible=true;repT=0;rpt=0}else{newTarget();mk2.visible=ring.visible=true}
 if(m=='race')rac.forEach(c=>c.stun=2.5);say(MIS[m][2],3)}
@@ -368,7 +377,7 @@ else if(n=='top')h=Object.keys(MIS).map(k=>'<div class="row"><b>'+MIS[k][0]+'</b
 else if(n=='end'){const nx=curStage>=0&&x.win&&curStage+1<STG.length;h='<h2 style="margin:6px">'+(x.win?'برنده شدی! 🏆':'باختی')+'</h2><div style="margin:4px;font-size:15px">'+x.why+'<br>'+(x.st?'⭐'.repeat(x.st)+'<br>':'')+'امتیاز '+Math.round(score)+' &nbsp; 💰 +'+x.rw+' &nbsp; ✨ '+x.xg+' XP'+(x.lvUp?'<br>'+x.lvUp:'')+'<br>🏅 '+x.L.join(' · ')+'</div>'+(nx?B('stg','مرحلهٔ بعد','',curStage+1):'')+B(dailyRun?'dstart':curStage>=0?'stg':'go','دوباره','',curStage>=0?curStage:mis)+B('main','منو','g')}
 const TT={cust:'شخصی‌سازی',ach:'دستاوردها',camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="'+(n=='cust'?'gar':'main')+'" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';pgT=performance.now();ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
 function act(a,v){aud();
-if(a=='main'||a=='mis'||a=='gar'||a=='set'||a=='top'||a=='camp'||a=='daily'||a=='cust'||a=='ach')page(a);else if(a=='cz'){const[k,i]=v.split(':'),pr=CZ[k][2][+i],key=SV.car+':'+k+i;if(pr&&!SV.cown.includes(key)){if(SV.money<pr){say('پول کافی نیست',1.5);return}SV.money-=pr;SV.cown.push(key)}(SV.cz[SV.car]=SV.cz[SV.car]||{})[k]=+i;save();setCar();page('cust')}else if(a=='tut'){pend=['cp',{}];page('tut')}else if(a=='pend')startGame(pend[0],pend[1]);else if(a=='stg')startGame(STG[v].m,Object.assign({stage:+v},STG[v]));else if(a=='dstart')startGame(dailyStage().m,Object.assign({daily:1},dailyStage()));else if(a=='lock')say('اول مرحلهٔ قبل را ببر',1.5);else if(a=='resume'){paused=0;ov.style.display='none'}else if(a=='quit'){paused=0;playing=0;heat=0;K.gas=K.brk=0;mk2.visible=ring.visible=false;page('main')}else if(a=='go')startGame(v);
+if(a=='main'||a=='mis'||a=='gar'||a=='set'||a=='top'||a=='camp'||a=='daily'||a=='cust'||a=='ach')page(a);else if(a=='cz'){const[k,i]=v.split(':'),pr=CZ[k][2][+i],key=SV.car+':'+k+i;if(pr&&!SV.cown.includes(key)){if(SV.money<pr){say('پول کافی نیست',1.5);return}SV.money-=pr;SV.cown.push(key)}(SV.cz[SV.car]=SV.cz[SV.car]||{})[k]=+i;save();setCar();page('cust')}else if(a=='tut'){pend=['cp',{}];page('tut')}else if(a=='pend')startGame(pend[0],pend[1]);else if(a=='stg')startGame(STG[v].m,Object.assign({stage:+v},STG[v]));else if(a=='dstart')startGame(dailyStage().m,Object.assign({daily:1},dailyStage()));else if(a=='lock')say('اول مرحلهٔ قبل را ببر',1.5);else if(a=='resume'){paused=0;ov.style.display='none'}else if(a=='quit'){paused=0;playing=0;heat=0;clearCops();K.gas=K.brk=0;mk2.visible=ring.visible=false;page('main')}else if(a=='go')startGame(v);
 else if(a=='car'){const c=CARS.find(x=>x.id==v);if(!SV.owned.includes(v)){if(lvOf(SV.xp)<c.lv){say('سطح '+c.lv+' لازم است',1.5);return}if(SV.money<c.p){say('پول کافی نیست',1.5);return}SV.money-=c.p;SV.owned.push(v)}SV.car=v;save();setCar();page('gar')}
 else if(a=='col'){SV.col[SV.car]=+v;save();setCar();page('gar')}
 else if(a=='up'){const k=SV.car+':'+v,l=SV.up[k]||0,cost=1500*(l+1);if(l>=3)return;if(SV.money<cost){say('پول کافی نیست',1.5);return}SV.money-=cost;SV.up[k]=l+1;save();stats();page('gar')}
@@ -388,6 +397,7 @@ for(let j=Math.floor((P.z-220)/C);j<=Math.ceil((P.z+220)/C);j++){mc.moveTo(P.x-2
 mc.stroke();
 if(mis!='esc'){const dx=tgt[0]-P.x,dz=tgt[1]-P.z,dg=Math.hypot(dx,dz),f=dg>190?190/dg:1;mc.fillStyle='#39ff88';mc.beginPath();mc.arc(P.x+dx*f,P.z+dz*f,24,0,6.2832);mc.fill()}
 for(const o of ais)if(o.cop){mc.fillStyle=Math.sin(t*10)>0?'#ff3030':'#3a78ff';mc.beginPath();mc.arc(o.vx,o.vz,16,0,6.2832);mc.fill()}
+for(const b of RB){mc.fillStyle='#ff3030';for(const q of b.pts)mc.fillRect(q[0]-9,q[1]-9,18,18)}for(const s2 of SP){mc.fillStyle='#ffd23c';mc.fillRect(s2.x-10,s2.z-10,20,20)}
 mc.restore();mc.setTransform(1,0,0,1,0,0);mc.fillStyle='#fff';mc.beginPath();mc.moveTo(50,42);mc.lineTo(44,57);mc.lineTo(56,57);mc.fill()}
 // ---------- stage 2: weather, traffic lights, pedestrians, smoke, drift ----------
 const Dm=new T.Object3D(),GRAYC=new T.Color(0x8a93a3),GC=new T.Color();
@@ -439,12 +449,36 @@ if(playing&&dt>0&&boost){for(let i=0;i<2;i++)fl.spawn(P.x-f[0]*2.3+(Math.random(
 tsm.update(dt);fl.update(dt);
 slE.style.opacity=playing?Math.min(.55,Math.max(0,(v-32)/26)+(boost?.25:0)):0;slE.style.transform='rotate('+((t*9)%360)+'deg) scale(1.5)';
 beam.visible=me.g.visible&&dayD<.6;if(beam.visible){beam.position.set(P.x+f[0]*2,.8+P.y,P.z+f[1]*2);beam.rotation.y=P.h;beam.material.opacity=(.6-dayD)*.28}}
+// ---------- smarter police: roadblocks, spike strips, helicopter ----------
+const RB=[],SP=[];let rbT=14,spT=9,flat=0,heliOn=false,hvis=0,hpx=0,hpz=0;
+const heli=new T.Group(),hmM=new T.MeshStandardMaterial({color:0x1d2a44,metalness:.5,roughness:.4}),hwM=new T.MeshBasicMaterial({color:0x111111});
+{const a=(w,h,d,x,y,z,m)=>{const e=new T.Mesh(gB,m);e.scale.set(w,h,d);e.position.set(x,y,z);heli.add(e);return e};a(2.2,1.6,4.4,0,0,0,hmM);a(.5,.5,4,0,.2,-4,hmM);a(.15,1.4,.5,0,.8,-6,hmM);a(1.6,.5,1,0,-.9,.5,hwM)}
+const rotor=new T.Group();{const a=new T.Mesh(gB,hwM);a.scale.set(11,.06,.35);const b=new T.Mesh(gB,hwM);b.scale.set(.35,.06,11);rotor.add(a,b);rotor.position.y=1.2;heli.add(rotor)}
+heli.visible=false;sc.add(heli);
+const hlight=new T.Mesh(new T.ConeGeometry(4.5,44,16,1,true).translate(0,-22,0).rotateX(-Math.PI/2),new T.MeshBasicMaterial({color:0xcfe6ff,transparent:true,opacity:0,blending:T.AdditiveBlending,depthWrite:false,side:T.DoubleSide}));hlight.visible=false;hlight.frustumCulled=false;sc.add(hlight);
+function ahead(dist){const fx=Math.sin(P.h),fz=Math.cos(P.h),ax=Math.abs(fx)>Math.abs(fz)?0:1,sg=Math.sign(ax?fz:fx)||1,a=(ax?P.z:P.x)+sg*dist;return{ax,sg,n:(sg>0?Math.ceil(a/C):Math.floor(a/C))*C-sg*18,o:Math.round((ax?P.x:P.z)/C)*C}}
+function mkRB(){const q=ahead(130+Math.random()*60),cars=[],pts=[];for(const lat of[-5.4,0,5.4]){const c=mk('sedan',0xf4f4f4,1,1),x=q.ax?q.o+lat:q.n,z=q.ax?q.n:q.o+lat;c.g.position.set(x,0,z);c.g.rotation.y=q.ax?Math.PI/2:0;sc.add(c.g);cars.push(c);pts.push([x,z])}
+RB.push({cars,pts,q,t0:performance.now()});say('🚧 سد راه پلیس در جلو!',2.2)}
+function mkSP(){const q=ahead(90+Math.random()*50);q.n-=q.sg*14;const x=q.ax?q.o:q.n,z=q.ax?q.n:q.o,g=new T.Mesh(new T.BoxGeometry(q.ax?14:1.1,.08,q.ax?1.1:14),new T.MeshLambertMaterial({color:0x222226,emissive:0x330000}));g.position.set(x,.06,z);sc.add(g);SP.push({g,x,z,q,hit:0,t0:performance.now()})}
+const rmo=o=>{if(o.cars)o.cars.forEach(c=>{sc.remove(c.g);c.g.traverse(m=>{if(m.geometry)m.geometry.dispose()})});if(o.g&&!o.cars){sc.remove(o.g);o.g.geometry.dispose()}};
+function clearCops(){RB.splice(0).forEach(rmo);SP.splice(0).forEach(rmo);heliOn=false;hvis=0;heli.visible=false;hlight.visible=false;flat=0;rbT=14;spT=9}
+function copsFx(dt,t){const stars=Math.ceil(heat/20),now=performance.now();
+if(playing&&dt>0){rbT-=dt;spT-=dt;if(stars>=3&&rbT<=0&&RB.length<2){rbT=26;mkRB()}if(stars>=2&&spT<=0&&SP.length<2){spT=16;mkSP()}}
+for(let i=RB.length-1;i>=0;i--){const b=RB[i];b.cars.forEach(c=>{if(c.bar){const on=Math.sin(t*14)>0;c.bar[0].visible=on;c.bar[1].visible=!on}});
+if(playing)for(const q of b.pts){const d=Math.hypot(P.x-q[0],P.z-q[1]);if(d<3.4){const nx=(P.x-q[0])/(d||1),nz=(P.z-q[1])/(d||1);if(!solid(P.x+nx*(3.4-d),P.z+nz*(3.4-d))){P.x+=nx*(3.4-d);P.z+=nz*(3.4-d)}if(Math.abs(P.v)>5){shake=1;dmg(Math.abs(P.v)*.9);crash(Math.abs(P.v))}P.v*=.25;P.vh=P.h}}
+if(Math.hypot(P.x-b.pts[1][0],P.z-b.pts[1][1])>300||now-b.t0>70000){rmo(b);RB.splice(i,1)}}
+for(let i=SP.length-1;i>=0;i--){const s=SP[i];if(playing&&!s.hit){const al=s.q.ax?P.z-s.z:P.x-s.x,la=s.q.ax?P.x-s.x:P.z-s.z;if(Math.abs(al)<1.4&&Math.abs(la)<7.5&&P.y<.4){s.hit=1;flat=7;shake=1;vib(200);say('💥 لاستیک‌ها پنچر شد!',2)}}
+if(Math.hypot(P.x-s.x,P.z-s.z)>260||now-s.t0>50000){rmo(s);SP.splice(i,1)}}
+heliOn=playing&&heat>=61;
+if(heliOn){if(!hvis){hvis=1;hpx=P.x+70;hpz=P.z+70;say('🚁 بالگرد پلیس!',2.2)}const a=t*.5,k=Math.min(1,dt*1.6);hpx+=(P.x+Math.sin(a)*22-hpx)*k;hpz+=(P.z+Math.cos(a)*22-hpz)*k;heli.visible=hlight.visible=true;
+heli.position.set(hpx,32+Math.sin(t*2)*.8,hpz);heli.rotation.y=Math.atan2(P.x-hpx,P.z-hpz);rotor.rotation.y+=dt*40;hlight.position.copy(heli.position);hlight.lookAt(P.x,P.y,P.z);hlight.material.opacity=.1+.22*(1-dayD)}
+else{hvis=0;heli.visible=hlight.visible=false}}
 // ---------- loop ----------
-let last=performance.now(),cyaw=0,fr=0,fr2=0,oa=0,fa=0,fn=0,vo=0;
-function frame(now){requestAnimationFrame(frame);let dt=Math.min(.05,(now-last)/1e3);if(paused)dt=0;last=now;const t=now/1e3;fa+=dt;fn++;if(fa>=2){const fps=fn/fa;fa=fn=0;if(playing&&t>8&&SV.auto&&fps<38&&SV.q>0){SV.q--;save();applySet();say('کیفیت خودکار کاهش یافت',2)}}
-if(playing){stepP(dt);vert(dt)}upd();{let n=first?999:2;first=0;while(bq.length&&n--){const[i,j]=bq.shift(),q=i+','+j;if(blocks.has(q)){const m=mkBlock(i,j);blocks.set(q,m);sc.add(m)}}}sky(dt);gr.position.set(P.x,0,P.z);weather(dt);sigs(t,dt);stepPeds(dt,t);stepSmoke(dt);redCheck(t);fxs(dt,t);trk(dt);if(playing&&P.slip>.22&&Math.abs(P.v)>10)skid(dt);
+let last=performance.now(),cyaw=0,fr=0,fr2=0,oa=0,fa=0,fn=0,vo=0,ldN=0;
+function frame(now){requestAnimationFrame(frame);let dt=Math.min(.05,(now-last)/1e3);if(paused)dt=0;last=now;const t=now/1e3;fa+=dt;fn++;if(ldN<4&&++ldN==4)setTimeout(()=>{const l=$('ld');if(l){l.style.opacity=0;setTimeout(()=>l.remove(),700)}},500);if(fa>=2){const fps=fn/fa;fa=fn=0;if(playing&&t>8&&SV.auto&&fps<38&&SV.q>0){SV.q--;save();applySet();say('کیفیت خودکار کاهش یافت',2)}}
+if(playing){stepP(dt);vert(dt)}upd();{let n=first?999:2;first=0;while(bq.length&&n--){const[i,j]=bq.shift(),q=i+','+j;if(blocks.has(q)){const m=mkBlock(i,j);blocks.set(q,m);sc.add(m)}}}sky(dt);gr.position.set(P.x,0,P.z);weather(dt);sigs(t,dt);stepPeds(dt,t);stepSmoke(dt);redCheck(t);fxs(dt,t);trk(dt);copsFx(dt,t);if(playing&&P.slip>.22&&Math.abs(P.v)>10)skid(dt);
 let near=1e9;for(const o of ais){const d=stepAI(o,dt,t);if(o.cop)near=Math.min(near,d)}
-if(playing){if(Math.abs(P.v)>30)heat=Math.min(100,heat+6*dt);else if(near>70)heat=Math.max(0,heat-3*dt)}
+if(playing){if(Math.abs(P.v)>30)heat=Math.min(100,heat+6*dt);else if(near>70)heat=Math.max(0,heat-3*dt/(heliOn?3:1))}
 if(playing&&heat>20&&near<7&&Math.abs(P.v)<9){bust+=dt;if(bust>1.6){bust=0;if(mis=='free')caught();else endGame(0,'پلیس دستگیرت کرد')}}else bust=Math.max(0,bust-dt);
 if(playing){tleft-=dt;
 if(mis=='free')freeLogic(dt);else if(mis=='esc'){score+=dt*10;heat=Math.max(heat,40);if(tleft<=0)endGame(1,'تا آخر دوام آوردی')}
@@ -471,7 +505,7 @@ cam.rotateZ(-P.steer*P.v*.0006+(Math.random()-.5)*sh*.02);
 cam.fov+=((mode?74:62)+(boost?10:0)+Math.abs(P.v)*.4-cam.fov)*Math.min(1,4*dt);cam.updateProjectionMatrix();
 if(eng){const v=Math.abs(P.v),gg=Math.min(5,Math.floor(v/9)+1),r=(v-(gg-1)*9)/9;eng.o.frequency.value=45+r*70+gg*6+(K.gas?10:0);eng.o2.frequency.value=eng.o.frequency.value*.5;eng.f.frequency.value=350+(K.gas?900:200)+r*300;eng.g.gain.value=(.03+(K.gas?.035:0))*SV.vol}
 if(sq)sq.gain.value=playing&&P.slip>.22&&Math.abs(P.v)>10?Math.min(.05,P.slip*.08)*SV.vol:0;
-if(rnG){rnG.gain.value=rain*.12*SV.vol;wnG.gain.value=(.015+Math.min(.1,Math.abs(P.v)*.002))*SV.vol;hnG.gain.value=K.hn?.05*SV.vol:0}
+if(rnG){rnG.gain.value=rain*.12*SV.vol;wnG.gain.value=(.015+Math.min(.1,Math.abs(P.v)*.002))*SV.vol;hnG.gain.value=K.hn?.05*SV.vol:0;if(hlG)hlG.gain.value=heliOn?(.05+.04*Math.sin(t*38))*SV.vol:0}
 if(sir){sir.o.frequency.value=800+320*Math.sin(t*6);sir.g.gain.value=heat>20?Math.max(0,1-near/140)*.05*SV.vol:0}
 $('spd').firstChild.nodeValue=Math.round(Math.abs(P.v)*3.6)+' ';
 const n=Math.ceil(heat/20);$('heat').textContent='★'.repeat(n)+'☆'.repeat(5-n);
