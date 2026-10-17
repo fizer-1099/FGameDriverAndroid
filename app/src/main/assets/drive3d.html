@@ -8,7 +8,7 @@ canvas{display:block}
 .b{position:fixed;width:74px;height:74px;border:2px solid #ffffff44;background:#0b1024b0;border-radius:50%;font-size:24px;display:flex;align-items:center;justify-content:center;touch-action:none;bottom:max(18px,env(safe-area-inset-bottom))}
 .b:active{background:#ff9a3cb0}
 #gas{right:22px;width:96px;height:96px;bottom:60px;background:#1f7a4acc}
-#brk{right:132px;background:#8a2020cc}#gr{right:132px;bottom:104px;width:56px;height:56px;font-size:22px;font-weight:700}
+#brk{right:132px;background:#8a2020cc}#rv{right:132px;bottom:104px;width:64px;height:64px;font-size:12px;line-height:1.15;font-weight:700;text-align:center;background:#1c2a55cc}
 #bl{left:22px}#br{left:112px}
 .t{position:fixed;top:max(10px,env(safe-area-inset-top));font-size:14px;background:#0b1024b0;padding:6px 11px;border-radius:14px;color:#fff;text-decoration:none}
 #spd{left:50%;transform:translateX(-50%);font-size:28px;font-weight:700;min-width:130px;text-align:center}
@@ -48,14 +48,17 @@ canvas{display:block}
 <div class="t" id="info" style="top:56px;left:50%;transform:translateX(-50%)">⏱ 0 | 🏁 0/8 | ⭐ 0</div>
 <div class="t" id="hpw" style="left:14px;top:52px;width:90px;padding:4px"><div id="hp" style="height:8px;background:#3be07a;border-radius:6px;width:100%"></div></div>
 <div class="t" id="arr" style="left:50%;top:96px;transform:translateX(-50%);text-align:center"><div id="ar" style="font-size:30px;line-height:30px;color:#39ff88">▲</div><span id="dist"></span></div>
-<canvas id="mm" width="100" height="100" style="position:fixed;left:14px;top:84px;width:100px;height:100px;border-radius:50%;background:#0b1024b0;border:2px solid #ffffff44;pointer-events:none"></canvas>
+<canvas id="mm" width="100" height="100" style="position:fixed;right:14px;top:60px;width:104px;height:104px;border-radius:50%;background:#0b1024d0;border:2px solid #ffffff66;pointer-events:auto;touch-action:none"></canvas>
 <div id="vg" style="position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;display:none;background:radial-gradient(ellipse at center,transparent 55%,#0009 100%)"></div>
 <div id="sl" style="position:fixed;left:-25%;top:-25%;width:150%;height:150%;pointer-events:none;opacity:0;will-change:transform,opacity;background:repeating-conic-gradient(from 0deg,transparent 0 5deg,rgba(255,255,255,.35) 5deg 5.5deg);-webkit-mask-image:radial-gradient(circle,transparent 38%,#000 78%);mask-image:radial-gradient(circle,transparent 38%,#000 78%)"></div>
+<div id="fm" style="display:none;position:fixed;left:0;top:0;right:0;bottom:0;z-index:5000;background:#050a18f2;flex-direction:column;align-items:center;justify-content:center;gap:6px"><canvas id="fmc" width="680" height="300" style="height:64vh;max-width:94vw;aspect-ratio:680/300;border:2px solid #ffffff44;border-radius:14px;background:#0a1226;touch-action:none"></canvas>
+<div style="display:flex;gap:8px"><div class="bt g" id="fz1" style="margin:0;padding:7px 16px">＋</div><div class="bt g" id="fz2" style="margin:0;padding:7px 16px">－</div><div class="bt g" id="fc" style="margin:0;padding:7px 16px">🎯 من</div><div class="bt" id="fx" style="margin:0;padding:7px 18px">بستن</div></div>
+<small style="opacity:.85">🟢 مقصد &nbsp; 🟠 تعمیرگاه &nbsp; 🔴🔵 پلیس &nbsp; 🟡 رمپ/میخ &nbsp; ⚪ آمبولانس</small></div>
 <div id="msg"></div>
 <div class="b" id="wh" style="left:18px;bottom:14px;width:150px;height:150px;display:none;border-radius:50%;border:9px solid #ffffff55;background:linear-gradient(#ffffff66,#ffffff66) 50% 50%/76% 9px no-repeat,linear-gradient(#ffffff66,#ffffff66) 50% 100%/9px 50% no-repeat,radial-gradient(circle,#ff9a3c 0 9%,transparent 10%),#0b1024aa;touch-action:none"><i style="position:absolute;top:-12px;left:50%;width:10px;height:16px;background:#ff5a3c;transform:translateX(-50%);border-radius:3px"></i></div>
 <div class="b pb" id="phx" style="right:20px;top:14px;bottom:auto;width:56px;height:56px">✕</div><div class="b pb" id="phf" style="right:90px;top:14px;bottom:auto;width:56px;height:56px">🎨</div>
 <div class="b" id="bl">◀</div><div class="b" id="br">▶</div>
-<div class="b" id="gr">D</div><div class="b" id="hn" style="left:202px;bottom:18px;font-size:22px">📢</div><div class="b" id="hb" style="left:112px;bottom:104px;font-size:12px">ترمز دستی</div><div class="b" id="nit" style="left:22px;bottom:104px;font-size:15px;background:#b8480fcc">🔥100</div><div class="b" id="brk">ترمز</div><div class="b" id="gas">گاز</div>
+<div class="b" id="rv">دنده<br>عقب</div><div class="b" id="hn" style="left:202px;bottom:18px;font-size:22px">📢</div><div class="b" id="hb" style="left:112px;bottom:104px;font-size:12px">ترمز دستی</div><div class="b" id="nit" style="left:22px;bottom:104px;font-size:15px;background:#b8480fcc">🔥100</div><div class="b" id="brk">ترمز</div><div class="b" id="gas">گاز</div>
 <script type="module">
 import * as T from './3d/three.module.js';
 let RAD=4;const C=60,R=8,LANE=4,DIRS=[[1,0],[-1,0],[0,1],[0,-1]];
@@ -257,7 +260,7 @@ if(dd<3.1){const nx=(P.x-o.vx)/dd,nz=(P.z-o.vz)/dd;if(!solid(P.x+nx*(3.1-dd),P.z
 if(Math.abs(P.v)>5){shake=1;dmg(Math.abs(P.v)*.7,-nx,-nz);crash(Math.abs(P.v));if(!o.cop)heat=Math.min(100,heat+15)}P.v*=.6;o.stun=.7;o.sp*=.3}
 return dd}
 // ---------- input ----------
-const K={l:0,r:0,gas:0,brk:0,nit:0,hb:0,hn:0,sx:0};let mode=0,au,eng,sir,sir2,ambT=0,sq,rnG,wnG,hnG,hlG,mst=0,tiltOn=0,tilt=0,todMode=0,tod=.2;
+const K={l:0,r:0,gas:0,brk:0,nit:0,hb:0,hn:0,sx:0,rev:0};let mode=0,au,eng,sir,sir2,ambT=0,sq,rnG,wnG,hnG,hlG,mst=0,tiltOn=0,tilt=0,todMode=0,tod=.2;
 let nb;function aud(){if(au){au.resume();return}try{au=new(window.AudioContext||webkitAudioContext)();
 const o=au.createOscillator(),o2=au.createOscillator(),f=au.createBiquadFilter(),g=au.createGain(),g2=au.createGain();o.type='sawtooth';o2.type='square';f.type='lowpass';f.frequency.value=600;g.gain.value=.03;g2.gain.value=.4;o.connect(f);o2.connect(g2);g2.connect(f);f.connect(g);g.connect(au.destination);o.start();o2.start();eng={o,o2,f,g};
 const so=au.createOscillator(),sg=au.createGain();so.type='sine';sg.gain.value=0;so.connect(sg);sg.connect(au.destination);so.start();sir={o:so,g:sg};
@@ -272,14 +275,14 @@ function music(){if(!au||!SV.mus||SV.vol<=0)return;const t0=au.currentTime,N=[22
 g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(Math.max(.0002,.035*SV.vol),t0+.06);g.gain.exponentialRampToValueAtTime(.0001,t0+1.3);o.connect(g);g.connect(au.destination);o.start(t0);o.stop(t0+1.4);
 if((mst++)%6==0){const b=au.createOscillator(),bg=au.createGain();b.type='sine';b.frequency.value=[55,65.4,73.4,49][Math.floor(Math.random()*4)];bg.gain.setValueAtTime(.0001,t0);bg.gain.exponentialRampToValueAtTime(Math.max(.0002,.07*SV.vol),t0+.4);bg.gain.exponentialRampToValueAtTime(.0001,t0+2.8);b.connect(bg);bg.connect(au.destination);b.start(t0);b.stop(t0+3)}}
 function crash(v){if(!au||!nb)return;const s=au.createBufferSource(),g=au.createGain();s.buffer=nb;g.gain.value=Math.min(.5,v/50)*SV.vol;vib(Math.min(200,v*5));s.connect(g);g.connect(au.destination);s.start()}
-for(const[id,k]of[['bl','l'],['br','r'],['gas','gas'],['brk','brk'],['nit','nit'],['hb','hb'],['hn','hn']]){const e=$(id);
+for(const[id,k]of[['bl','l'],['br','r'],['gas','gas'],['brk','brk'],['nit','nit'],['hb','hb'],['hn','hn'],['rv','rev']]){const e=$(id);
 e.addEventListener('pointerdown',v=>{K[k]=1;aud();v.preventDefault()});
 for(const n of['pointerup','pointercancel','pointerleave'])e.addEventListener(n,()=>K[k]=0)}
-const KM={ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r',ArrowUp:'gas',w:'gas',ArrowDown:'brk',s:'brk',' ':'hb',h:'hn'};
-const setGear=()=>{$('gr').textContent=$('grt').textContent=gear>0?'D':'R';$('grt').style.color=gear>0?'#7dff9a':'#ff6a5a'},sw=()=>{gear=-gear;setGear()};
-addEventListener('keydown',e=>{if(KM[e.key]){K[KM[e.key]]=1;aud()}if(e.key=='c')mode^=1;if(e.key=='r')sw()});
+const KM={ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r',ArrowUp:'gas',w:'gas',ArrowDown:'brk',s:'brk',' ':'hb',h:'hn',r:'rev'};
+const setGear=()=>{$('grt').textContent=gear>0?'D':'R';$('grt').style.color=gear>0?'#7dff9a':'#ff6a5a'};
+addEventListener('keydown',e=>{if(KM[e.key]){K[KM[e.key]]=1;aud()}if(e.key=='c')mode^=1});
 addEventListener('keyup',e=>{if(KM[e.key])K[KM[e.key]]=0});
-$('cam').addEventListener('pointerdown',()=>mode^=1);$('gr').addEventListener('pointerdown',e=>{sw();e.preventDefault()});
+$('cam').addEventListener('pointerdown',()=>mode^=1);
 $('tm').addEventListener('pointerdown',()=>{todMode=(todMode+1)%3;$('tm').textContent='زمان: '+['خودکار','روز','شب'][todMode]});
 $('tl').addEventListener('pointerdown',async()=>{tiltOn^=1;$('tl').classList.toggle('on',tiltOn);layout();
 try{if(tiltOn&&window.DeviceMotionEvent&&DeviceMotionEvent.requestPermission)await DeviceMotionEvent.requestPermission()}catch(e){}});
@@ -290,10 +293,10 @@ function hit(x,z,h){const fx=Math.sin(h),fz=Math.cos(h),rx=-Math.cos(h),rz=Math.
 for(const a of[-2.1,2.1])for(const b of[-.95,.95])if(solid(x+fx*a+rx*b,z+fz*a+rz*b))return 1;return 0}
 function bump(){if(Math.abs(P.v)>8){shake=Math.min(1,Math.abs(P.v)/25);heat=Math.min(100,heat+6);dmg(Math.abs(P.v)*.6);crash(Math.abs(P.v))}P.v*=-.25;P.vh=P.h}
 function stepP(dt){
-flat=Math.max(0,flat-dt);const VM=ST.vm*(flat>0?.65:1);let a=0,nb2=0;if(K.gas){if(gear>0){if(P.v<(K.nit&&nitE>0?VM+14:VM))a+=ST.acc;if(K.nit&&nitE>0&&P.v<VM+14){a+=22;nb2=1}}else if(P.v>-11)a-=9}if(nb2&&!boost)vib(40);nitE=nb2?Math.max(0,nitE-35/ST.nc*dt):Math.min(100,nitE+8*ST.nr*dt);boost=nb2;
+flat=Math.max(0,flat-dt);const VM=ST.vm*(flat>0?.65:1);const g0=gear;gear=(K.rev&&!K.gas&&P.v<=.5)||P.v<-.5?-1:1;if(gear!==g0)setGear();let a=0,nb2=0;if(K.gas){if(P.v<(K.nit&&nitE>0?VM+14:VM))a+=ST.acc;if(K.nit&&nitE>0&&P.v<VM+14){a+=22;nb2=1}}else if(K.rev){if(P.v>.5)a-=34*ST.brk;else if(P.v>-12)a-=10}if(nb2&&!boost)vib(40);nitE=nb2?Math.max(0,nitE-35/ST.nc*dt):Math.min(100,nitE+8*ST.nr*dt);boost=nb2;
 if(K.brk){if(Math.abs(P.v)>.3)a-=Math.sign(P.v)*34*ST.brk;else P.v=0}
 a-=ST.acc/(ST.vm*ST.vm)*P.v*Math.abs(P.v);if(K.hb&&P.v>10)a-=9;if(!K.gas&&!K.brk)a-=Math.sign(P.v)*2;
-P.v+=a*dt;if(!K.gas&&!K.brk&&Math.abs(P.v)<.3)P.v=0;
+P.v+=a*dt;if(!K.gas&&!K.brk&&!K.rev&&Math.abs(P.v)<.3)P.v=0;
 const sIn=cl(K.r-K.l+K.sx+(tiltOn?tilt:0),-1,1);P.steer+=(sIn-P.steer)*Math.min(1,7*dt);
 const hbk=K.hb&&P.v>10;const nh=P.h-P.v/2.7*Math.tan(P.steer*.5*ST.hnd*DFS[SV.diff].h*(flat>0?.6:1)*(hbk?1.9:1)/(1+Math.abs(P.v)*.07))*dt;if(!hit(P.x,P.z,nh))P.h=nh;
 if(P.vh==null||P.v<4)P.vh=P.h;else P.vh+=wr(P.h-P.vh)*Math.min(1,(hbk?1.6:12*ST.hnd)*(1-.3*rain)*THM[TH].gr*dt);P.slip=Math.abs(wr(P.h-P.vh));
@@ -391,7 +394,7 @@ else if(n=='gar')h=top()+'<div class="sc">'+CARS.map(c=>'<div class="cd'+(c.id==
 +UPS.map(u=>{const l=up(u[0]);return '<div class="row"><span>'+u[1]+' سطح '+l+'/3</span>'+(l<3?'<span class="bt" style="margin:0;padding:6px 12px;font-size:14px" data-a="up" data-v="'+u[0]+'">ارتقا 💰'+1500*(l+1)+'</span>':'<span>حداکثر</span>')+'</div>'}).join('')+B('cust','شخصی‌سازی ظاهر ماشین')+B('main','بازگشت','g');
 else if(n=='set')h=[['کیفیت گرافیک',QN[SV.q],'q'],['آینه‌ها',SV.mir?'روشن':'خاموش','mir'],['لرزش',SV.vib?'روشن':'خاموش','vib'],['صدا',SV.vol*100+'٪','vol'],['فرمان گوشی',SV.inv?'معکوس':'عادی','inv'],['کیفیت خودکار',SV.auto?'روشن':'خاموش','auto'],['موسیقی',SV.mus?'روشن':'خاموش','mus'],['فرمان',SV.wheel?'چرخ لمسی':'دکمه‌ها','wheel'],['اندازهٔ دکمه‌ها',['کوچک','متوسط','بزرگ'][SV.bs],'bs'],['شفافیت دکمه‌ها',['کم','متوسط','کامل'][SV.bo],'bo'],['سختی بازی',['آسان','معمولی','سخت'][SV.diff],'diff'],['محیط شهر',['شهری','کویر','برفی'][SV.th],'th'],['آب‌وهوا',['خودکار','صاف','باران','مه'][SV.wx],'wx'],['حساسیت فرمان',SV.sens==1?'متوسط':SV.sens>1?'زیاد':'کم','sens']]
 .map(r=>'<div class="bt g" data-a="s" data-v="'+r[2]+'" style="display:flex;justify-content:space-between"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>').join('')+B('main','بازگشت','g');
-else if(n=='tut')h='<div style="text-align:right;line-height:2;font-size:14px;padding:6px 10px">🟢 <b>گاز</b> و 🔴 <b>ترمز</b> سمت راست؛ دکمهٔ <b>D/R</b> دنده جلو و عقب را عوض می‌کند.<br>◀ ▶ فرمان؛ یا «فرمان گوشی» را بزن و گوشی را مثل فرمان بچرخان.<br>🔥 نیترو شتاب می‌دهد، «ترمز دستی» برای دریفت است و 📢 بوق.<br>🎥 دکمهٔ «دوربین» بین نمای بیرون و داخل ماشین عوض می‌کند.<br>🟩 به دایره‌های سبز برس. 🚓 سرعت بالا، تصادف، رد شدن از چراغ قرمز یا زدن به عابر، پلیس را تحریک می‌کند.<br>❤️ نوار سبز بالا سلامت ماشین و ★ سطح تعقیب پلیس است.</div>'+B('pend','متوجه شدم، شروع');
+else if(n=='tut')h='<div style="text-align:right;line-height:2;font-size:14px;padding:6px 10px">🟢 <b>گاز</b> و 🔴 <b>ترمز</b> سمت راست؛ دکمهٔ <b>دنده عقب</b> را نگه دار تا ماشین عقب برود.<br>◀ ▶ فرمان؛ یا «فرمان گوشی» را بزن و گوشی را مثل فرمان بچرخان.<br>🔥 نیترو شتاب می‌دهد، «ترمز دستی» برای دریفت است و 📢 بوق.<br>🎥 دکمهٔ «دوربین» بین نمای بیرون و داخل ماشین عوض می‌کند.<br>🟩 به دایره‌های سبز برس. 🚓 سرعت بالا، تصادف، رد شدن از چراغ قرمز یا زدن به عابر، پلیس را تحریک می‌کند.<br>❤️ نوار سبز بالا سلامت ماشین و ★ سطح تعقیب پلیس است.</div>'+B('pend','متوجه شدم، شروع');
 else if(n=='top')h=Object.keys(MIS).map(k=>'<div class="row"><b>'+MIS[k][0]+'</b><span>'+((SV.top[k]||[]).join(' · ')||'—')+'</span></div>').join('')+B('main','بازگشت','g');
 else if(n=='end'){const nx=curStage>=0&&x.win&&curStage+1<STG.length;h='<h2 style="margin:6px">'+(x.win?'برنده شدی! 🏆':'باختی')+'</h2><div style="margin:4px;font-size:15px">'+x.why+'<br>'+(x.st?'⭐'.repeat(x.st)+'<br>':'')+'امتیاز '+Math.round(score)+' &nbsp; 💰 +'+x.rw+' &nbsp; ✨ '+x.xg+' XP'+(x.lvUp?'<br>'+x.lvUp:'')+(x.gt?'<br>⏱ '+x.gt+' ثانیه'+(x.nb?' 🏆 رکورد جدید!':''):'')+'<br>🏅 '+x.L.join(' · ')+'</div>'+(nx?B('stg','مرحلهٔ بعد','',curStage+1):'')+B(dailyRun?'dstart':curStage>=0?'stg':'go','دوباره','',curStage>=0?curStage:mis)+B('main','منو','g')}
 const TT={cust:'شخصی‌سازی',ach:'دستاوردها',camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="'+(n=='cust'?'gar':'main')+'" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';pgT=performance.now();ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
@@ -410,12 +413,13 @@ ov.addEventListener('pointercancel',()=>{pd0=null});
 const mc=$('mm').getContext('2d');
 function drawMM(t){const k=.24,c=Math.cos(P.h),s=Math.sin(P.h);mc.setTransform(1,0,0,1,0,0);mc.clearRect(0,0,100,100);mc.save();mc.beginPath();mc.arc(50,50,50,0,6.2832);mc.clip();
 mc.setTransform(-k*c,-k*s,k*s,-k*c,50+k*(c*P.x-s*P.z),50+k*(s*P.x+c*P.z));
-mc.strokeStyle='#59627a';mc.lineWidth=14;mc.beginPath();
+mc.strokeStyle='#8b95b4';mc.lineWidth=16;mc.beginPath();
 for(let i=Math.floor((P.x-220)/C);i<=Math.ceil((P.x+220)/C);i++){mc.moveTo(i*C,P.z-220);mc.lineTo(i*C,P.z+220)}
 for(let j=Math.floor((P.z-220)/C);j<=Math.ceil((P.z+220)/C);j++){mc.moveTo(P.x-220,j*C);mc.lineTo(P.x+220,j*C)}
 mc.stroke();
 if(mis!='esc'){const dx=tgt[0]-P.x,dz=tgt[1]-P.z,dg=Math.hypot(dx,dz),f=dg>190?190/dg:1;mc.fillStyle='#39ff88';mc.beginPath();mc.arc(P.x+dx*f,P.z+dz*f,24,0,6.2832);mc.fill()}
 for(const o of ais)if(o.cop){mc.fillStyle=Math.sin(t*10)>0?'#ff3030':'#3a78ff';mc.beginPath();mc.arc(o.vx,o.vz,16,0,6.2832);mc.fill()}
+mc.fillStyle='#ff8a2a';for(let i=Math.round(P.x/C)-4;i<=Math.round(P.x/C)+4;i++)for(let j=Math.round(P.z/C)-4;j<=Math.round(P.z/C)+4;j++)if(hr(i,j,66)<.06){mc.beginPath();mc.arc(i*C,j*C,18,0,6.2832);mc.fill()}
 for(const b of RB){mc.fillStyle='#ff3030';for(const q of b.pts)mc.fillRect(q[0]-9,q[1]-9,18,18)}for(const s2 of SP){mc.fillStyle='#ffd23c';mc.fillRect(s2.x-10,s2.z-10,20,20)}
 mc.restore();mc.setTransform(1,0,0,1,0,0);mc.fillStyle='#fff';mc.beginPath();mc.moveTo(50,42);mc.lineTo(44,57);mc.lineTo(56,57);mc.fill()}
 // ---------- stage 2: weather, traffic lights, pedestrians, smoke, drift ----------
@@ -513,10 +517,27 @@ const THM=[{tints:[0xb9b2a8,0x9aa3b5,0xc7a58a,0x8b8f99,0xa8b59a],slab:0x666a7a,g
 function setTheme(i){if(i===TH)return;TH=i;const t=THM[i];tints.forEach((c,k)=>c.set(t.tints[k]));GR.set(t.slab);gr.material.color.set(t.ground);DAY.set(t.day);BRN.set(t.tree[0]);GRN.set(t.tree[1]);
 for(const m of blocks.values())if(m){sc.remove(m);m.geometry.dispose();m.children.forEach(c=>c.geometry.dispose())}blocks.clear();bq.length=0;bk=''}
 const crPos=[];function honk(x,z){if(!au)return;const d=Math.hypot(x-P.x,z-P.z);if(d>60)return;const o=au.createOscillator(),g=au.createGain(),t0=au.currentTime;o.type='square';o.frequency.value=420+Math.random()*80;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(Math.max(.0002,.06*SV.vol*(1-d/60)),t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+.35);o.connect(g);g.connect(au.destination);o.start();o.stop(t0+.4)}
+// ---------- full map ----------
+const fmE=$('fm'),fc=$('fmc'),fq=fc.getContext('2d');let fmOpen=0,fk=.5,fcx=0,fcz=0;
+function openMap(){if(!playing||paused||fmOpen)return;fmOpen=1;paused=1;fcx=P.x;fcz=P.z;fmE.style.display='flex';drawFull()}
+function closeMap(){if(!fmOpen)return;fmOpen=0;paused=0;fmE.style.display='none'}
+function drawFull(){const W2=fc.width,H2=fc.height,sx=X=>W2/2-(X-fcx)*fk,sy=Z=>H2/2-(Z-fcz)*fk;fq.setTransform(1,0,0,1,0,0);fq.fillStyle='#0a1226';fq.fillRect(0,0,W2,H2);
+const hw=W2/2/fk+C,hh=H2/2/fk+C;fq.strokeStyle='#8b95b4';fq.lineWidth=Math.max(2,15*fk);fq.beginPath();
+for(let i=Math.floor((fcx-hw)/C);i<=Math.ceil((fcx+hw)/C);i++){const x=sx(i*C);fq.moveTo(x,0);fq.lineTo(x,H2)}for(let j=Math.floor((fcz-hh)/C);j<=Math.ceil((fcz+hh)/C);j++){const y=sy(j*C);fq.moveTo(0,y);fq.lineTo(W2,y)}fq.stroke();
+const dot=(X,Z,col,r)=>{fq.fillStyle=col;fq.beginPath();fq.arc(sx(X),sy(Z),r,0,6.2832);fq.fill()},t=performance.now()/1e3;
+for(let i=Math.floor((fcx-hw)/C);i<=Math.ceil((fcx+hw)/C);i++)for(let j=Math.floor((fcz-hh)/C);j<=Math.ceil((fcz+hh)/C);j++){if(hr(i,j,66)<.06)dot(i*C,j*C,'#ff8a2a',6);if(fk>.25){if(RMP(i,j,0)){fq.fillStyle='#ffd23c';fq.fillRect(sx(i*C-4)-3,sy(j*C+30)-3,6,6)}if(RMP(i,j,1)){fq.fillStyle='#ffd23c';fq.fillRect(sx(i*C+30)-3,sy(j*C+4)-3,6,6)}}}
+if(mis!='esc'&&mis!='free'){fq.strokeStyle='#39ff88';fq.setLineDash([6,6]);fq.lineWidth=2;fq.beginPath();fq.moveTo(sx(P.x),sy(P.z));fq.lineTo(sx(tgt[0]),sy(tgt[1]));fq.stroke();fq.setLineDash([]);dot(tgt[0],tgt[1],'#39ff88',9)}
+for(const o of ais){if(o.off||o.lim)continue;if(o.cop)dot(o.vx,o.vz,Math.sin(t*10)>0?'#ff3030':'#3a78ff',5);else if(o.amb)dot(o.vx,o.vz,'#ffffff',5)}
+for(const b of RB)for(const q of b.pts)dot(q[0],q[1],'#ff3030',4);for(const s2 of SP)dot(s2.x,s2.z,'#ffd23c',4);
+fq.save();fq.translate(sx(P.x),sy(P.z));fq.rotate(-P.h);fq.fillStyle='#fff';fq.strokeStyle='#0a1226';fq.lineWidth=2;fq.beginPath();fq.moveTo(0,-11);fq.lineTo(-8,9);fq.lineTo(0,5);fq.lineTo(8,9);fq.closePath();fq.fill();fq.stroke();fq.restore();
+fq.strokeStyle='#fff';fq.lineWidth=3;fq.beginPath();fq.moveTo(20,H2-18);fq.lineTo(20+100*fk,H2-18);fq.stroke();fq.fillStyle='#fff';fq.font='14px sans-serif';fq.textAlign='left';fq.fillText('100 m',20,H2-26)}
+$('mm').addEventListener('pointerup',openMap);$('fx').addEventListener('pointerup',closeMap);$('fc').addEventListener('pointerup',()=>{fcx=P.x;fcz=P.z;drawFull()});
+$('fz1').addEventListener('pointerup',()=>{fk=Math.min(1.4,fk*1.4);drawFull()});$('fz2').addEventListener('pointerup',()=>{fk=Math.max(.07,fk/1.4);drawFull()});
+{let dr=null;fc.addEventListener('pointerdown',e=>{dr=[e.clientX,e.clientY];fc.setPointerCapture(e.pointerId)});fc.addEventListener('pointermove',e=>{if(!dr)return;const r=fc.getBoundingClientRect(),k=fc.width/r.width;fcx+=(e.clientX-dr[0])*k/fk;fcz+=(e.clientY-dr[1])*k/fk;dr=[e.clientX,e.clientY];drawFull()});const up=()=>dr=null;fc.addEventListener('pointerup',up);fc.addEventListener('pointercancel',up)}
 // ---------- loop ----------
 let last=performance.now(),cyaw=0,fr=0,fr2=0,oa=0,fa=0,fn=0,vo=0,ldN=0;
 function frame(now){requestAnimationFrame(frame);let dt=Math.min(.05,(now-last)/1e3);if(paused)dt=0;last=now;const t=now/1e3;fa+=dt;fn++;if(ldN<4&&++ldN==4)setTimeout(()=>{const l=$('ld');if(l){l.style.opacity=0;setTimeout(()=>l.remove(),700)}},500);if(fa>=2){const fps=fn/fa;fa=fn=0;if(playing&&t>8&&SV.auto&&fps<38&&SV.q>0){SV.q--;save();applySet();say('کیفیت خودکار کاهش یافت',2)}}
-if(playing){stepP(dt);vert(dt)}upd();{let n=first?999:2;first=0;while(bq.length&&n--){const[i,j]=bq.shift(),q=i+','+j;if(blocks.has(q)){const m=mkBlock(i,j);blocks.set(q,m);sc.add(m)}}}sky(dt);gr.position.set(P.x,0,P.z);weather(dt);sigs(t,dt);stepPeds(dt,t);stepSmoke(dt);redCheck(t);fxs(dt,t);trk(dt);copsFx(dt,t);ghostStep(dt);if(playing&&P.slip>.22&&Math.abs(P.v)>10)skid(dt);
+if(playing){stepP(dt);vert(dt)}upd();{let n=first?999:2;first=0;while(bq.length&&n--){const[i,j]=bq.shift(),q=i+','+j;if(blocks.has(q)){const m=mkBlock(i,j);blocks.set(q,m);sc.add(m)}}}sky(dt);gr.position.set(P.x,0,P.z);weather(dt);sigs(t,dt);stepPeds(dt,t);stepSmoke(dt);redCheck(t);fxs(dt,t);trk(dt);copsFx(dt,t);ghostStep(dt);if(fmOpen&&!playing)closeMap();if(playing&&P.slip>.22&&Math.abs(P.v)>10)skid(dt);
 let near=1e9;for(let i=0;i<ais.length;i++){const a=ais[i];if(a.off||a.lim||dt<=0)continue;for(let j=i+1;j<ais.length;j++){const b2=ais[j];if(b2.off||b2.lim||a.stun>0||b2.stun>0)continue;const ddx=a.vx-b2.vx,ddz=a.vz-b2.vz;if(ddx*ddx+ddz*ddz<7.5){a.stun=b2.stun=.9;a.sp*=.2;b2.sp*=.2;if(Math.random()<.6)honk(a.vx,a.vz)}}}
 for(const o of ais){const d=stepAI(o,dt,t);if(o.cop)near=Math.min(near,d)}
 if(playing){if(Math.abs(P.v)>30)heat=Math.min(100,heat+6*dt);else if(near>70)heat=Math.max(0,heat-3*dt/(heliOn?3:1))}
@@ -531,7 +552,7 @@ if(mis!='free')$('info').textContent='⏱ '+Math.max(0,Math.ceil(tleft))+(mis=='
 document.body.classList.toggle('mn',!playing);
 $('arr').style.display=playing&&mis!='esc'?'block':'none';$('mm').style.display=playing?'block':'none';$('nit').textContent='🔥'+Math.round(nitE);if(playing&&(fr2++&1)==0)drawMM(t);
 me.g.position.set(P.x,P.y,P.z);me.g.rotation.set(P.pitch-Math.atan2(P.air?P.vy:P.rv,Math.max(8,Math.abs(P.v))),P.h,P.steer*Math.min(1,Math.abs(P.v)/30)*.05);
-me.tl.color.set(K.brk&&Math.abs(P.v)>.3?0xff2a2a:(K.gas&&gear<0?0xe8e8e8:0x8a1212));spin(me,P.v,P.steer,dt);
+me.tl.color.set(K.brk&&Math.abs(P.v)>.3?0xff2a2a:(K.rev&&gear<0?0xe8e8e8:0x8a1212));spin(me,P.v,P.steer,dt);
 const fx=Math.sin(P.h),fz=Math.cos(P.h);
 spot.position.set(P.x+fx*2,1,P.z+fz*2);spot.target.position.set(P.x+fx*30,0,P.z+fz*30);
 shake=Math.max(0,shake-dt*2.5);const sh=shake*.35+Math.abs(P.v)*.0012+(boost?.12:0);
