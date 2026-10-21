@@ -54,6 +54,9 @@ canvas{display:block}
 <div id="fm" style="display:none;position:fixed;left:0;top:0;right:0;bottom:0;z-index:5000;background:#050a18f2;flex-direction:column;align-items:center;justify-content:center;gap:6px"><canvas id="fmc" width="680" height="300" style="height:64vh;max-width:94vw;aspect-ratio:680/300;border:2px solid #ffffff44;border-radius:14px;background:#0a1226;touch-action:none"></canvas>
 <div style="display:flex;gap:8px"><div class="bt g" id="fz1" style="margin:0;padding:7px 16px">＋</div><div class="bt g" id="fz2" style="margin:0;padding:7px 16px">－</div><div class="bt g" id="fc" style="margin:0;padding:7px 16px">🎯 من</div><div class="bt" id="fx" style="margin:0;padding:7px 18px">بستن</div></div>
 <small style="opacity:.85">🟢 مقصد &nbsp; 🟠 تعمیرگاه &nbsp; 🔴🔵 پلیس &nbsp; 🟡 رمپ/میخ &nbsp; ⚪ آمبولانس</small></div>
+<div class="t" id="ct" style="left:172px;top:10px;display:none">💬</div>
+<div id="cl" style="position:fixed;left:14px;top:92px;width:240px;pointer-events:none;font-size:12px;z-index:60"></div>
+<div id="cp" style="display:none;position:fixed;left:50%;top:44px;transform:translateX(-50%);width:min(540px,92vw);z-index:70;background:#0b1024f0;border-radius:14px;padding:8px"><div id="cq" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px"></div><div style="display:flex;gap:6px"><input id="ci" maxlength="140" autocomplete="off" placeholder="پیام…" style="flex:1;padding:8px;border-radius:10px;border:1px solid #fff4;background:#111a33;color:#fff;font-size:15px"><div class="bt" id="cs" style="margin:0;padding:8px 14px">ارسال</div><div class="bt g" id="cx" style="margin:0;padding:8px 12px">✕</div></div></div>
 <div id="msg"></div>
 <div class="b" id="wh" style="left:18px;bottom:14px;width:150px;height:150px;display:none;border-radius:50%;border:9px solid #ffffff55;background:linear-gradient(#ffffff66,#ffffff66) 50% 50%/76% 9px no-repeat,linear-gradient(#ffffff66,#ffffff66) 50% 100%/9px 50% no-repeat,radial-gradient(circle,#ff9a3c 0 9%,transparent 10%),#0b1024aa;touch-action:none"><i style="position:absolute;top:-12px;left:50%;width:10px;height:16px;background:#ff5a3c;transform:translateX(-50%);border-radius:3px"></i></div>
 <div class="b pb" id="phx" style="right:20px;top:14px;bottom:auto;width:56px;height:56px">✕</div><div class="b pb" id="phf" style="right:90px;top:14px;bottom:auto;width:56px;height:56px">🎨</div>
@@ -280,7 +283,7 @@ e.addEventListener('pointerdown',v=>{K[k]=1;aud();v.preventDefault()});
 for(const n of['pointerup','pointercancel','pointerleave'])e.addEventListener(n,()=>K[k]=0)}
 const KM={ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r',ArrowUp:'gas',w:'gas',ArrowDown:'brk',s:'brk',' ':'hb',h:'hn',r:'rev'};
 const setGear=()=>{$('grt').textContent=gear>0?'D':'R';$('grt').style.color=gear>0?'#7dff9a':'#ff6a5a'};
-addEventListener('keydown',e=>{if(KM[e.key]){K[KM[e.key]]=1;aud()}if(e.key=='c')mode^=1});
+addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;if(KM[e.key]){K[KM[e.key]]=1;aud()}if(e.key=='c')mode^=1});
 addEventListener('keyup',e=>{if(KM[e.key])K[KM[e.key]]=0});
 $('cam').addEventListener('pointerdown',()=>mode^=1);
 $('tm').addEventListener('pointerdown',()=>{todMode=(todMode+1)%3;$('tm').textContent='زمان: '+['خودکار','روز','شب'][todMode]});
@@ -316,7 +319,7 @@ hemi.intensity=(.3+.9*d)*(1-.25*wt);sun.intensity=(.1+1.2*d)*(1-.7*wt);sun.color
 bmat.emissiveIntensity=.08+.9*(1-d);mHl.opacity=1-d;sc.environmentIntensity=.1+.9*d;spot.intensity=(1-d)*5;dashL.intensity=(1-d)*.8;dayD=d;const a=tod*6.2832,L=Math.hypot(Math.cos(a)*.9,h,.3),q=cam.position;sunM.position.set(q.x+Math.cos(a)*.9/L*300,q.y+h/L*300,q.z+.3/L*300);moonM.position.set(2*q.x-sunM.position.x,2*q.y-sunM.position.y,2*q.z-sunM.position.z);sunM.visible=h>-.12;moonM.visible=h<.12;stars.position.copy(q);stars.material.opacity=1-d;stars.visible=d<.9}
 // ---------- save, garage, settings, menus, missions ----------
 let SV;try{SV=JSON.parse(localStorage.getItem('f3save'))}catch(e){}
-SV=Object.assign({money:1500,th:0,wheel:0,bs:1,bo:2,diff:1,ghost:{},stat:{km:0,jumps:0,drift:0,near:0,wins:0,maxspd:0},ach:[],cz:{},cown:[],xp:0,camp:{},daily:'',wx:0,auto:1,mus:1,tut:0,top:{},owned:['hatch'],car:'hatch',col:{},up:{},best:0,q:1,mir:1,vib:1,vol:1,inv:0,sens:1},SV||{});
+SV=Object.assign({money:1500,nick:'',th:0,wheel:0,bs:1,bo:2,diff:1,ghost:{},stat:{km:0,jumps:0,drift:0,near:0,wins:0,maxspd:0},ach:[],cz:{},cown:[],xp:0,camp:{},daily:'',wx:0,auto:1,mus:1,tut:0,top:{},owned:['hatch'],car:'hatch',col:{},up:{},best:0,q:1,mir:1,vib:1,vol:1,inv:0,sens:1},SV||{});
 const save=()=>{try{localStorage.setItem('f3save',JSON.stringify(SV))}catch(e){}},vib=ms=>{if(SV.vib&&navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}};
 const CARS=[{id:'hatch',ty:'hatch',n:'هاچ‌بک شهری',p:0,vm:44,ac:13,hn:1,ar:1},{id:'sedan',ty:'sedan',n:'سدان',p:3000,vm:48,ac:14.5,hn:1,ar:.9},{id:'suv',ty:'suv',n:'شاسی‌بلند',p:6000,vm:46,ac:15,hn:.9,ar:.65},
 {id:'pick',ty:'pick',n:'پیکاپ',p:8000,vm:47,ac:15.5,hn:.88,ar:.6},{id:'sport',ty:'sport',n:'اسپرت',p:15000,vm:56,ac:18,hn:1.15,ar:1.1},{id:'super',ty:'sport',n:'سوپراسپرت',p:30000,vm:64,ac:21,hn:1.25,ar:1.2}];
@@ -332,7 +335,7 @@ function trk(dt){if(!playing||dt<=0)return;const S=SV.stat,v=Math.abs(P.v);S.km+
 const STG=[{m:'cp',g:4,tf:1.4,n:'گرم‌کردن'},{m:'cp',g:6,tf:1.2,n:'شهر'},{m:'del',g:4,tf:1.3,n:'اولین بار'},{m:'esc',d:60,n:'فرار کوچک'},{m:'race',g:3,rs:21,n:'اولین مسابقه'},{m:'cp',g:8,tf:1,th:1,n:'سرعت'},{m:'del',g:6,tf:1,th:1,n:'محموله'},{m:'esc',d:90,th:1,n:'تعقیب'},{m:'race',g:4,rs:25,tod:2,th:2,n:'مسابقهٔ شبانه'},{m:'cp',g:10,tf:.9,wx:2,th:2,n:'برف سنگین'},{m:'esc',d:120,tod:2,th:2,n:'شب دراز'},{m:'race',g:5,rs:28,wx:2,tod:2,th:2,n:'نهایی'}];
 function dailyStage(){let h=7;for(const c of today())h=Math.imul(h^c.charCodeAt(0),16777619);const r=n=>(Math.imul(h^(n*2654435761),2246822519)>>>0)/4294967296;return{m:['cp','del','esc','race'][Math.floor(r(1)*4)],g:4+Math.floor(r(2)*5),tf:.9+r(3)*.3,d:60+30*Math.floor(r(4)*3),rs:22+Math.floor(r(5)*8),wx:r(6)<.35?2:-1,tod:r(7)<.4?2:0,th:Math.floor(r(8)*3)}}
 const COLS=[0xd8262f,0x2e5aa8,0xe0b020,0x2a8a5a,0x1e1e24,0xdadada,0x6a1f2e,0xff7a1a],UPS=[['eng','موتور'],['nit','نیترو'],['tir','لاستیک'],['arm','بدنه']];
-const MIS={free:['حالت آزاد','رانندگی آزاد بدون زمان؛ تعمیرگاه 🔧 در شهر هست','حالت آزاد؛ دایرهٔ نارنجی تعمیرگاه است'],cp:['چک‌پوینت','۸ دایرهٔ سبز را قبل از تمام شدن زمان بگیر','به دایرهٔ سبز برس!'],esc:['فرار از پلیس','۹۰ ثانیه از دست پلیس‌ها زنده بمان','پلیس‌ها دنبالتند! فرار کن'],
+const MIS={net:['آنلاین','','🌐 وارد دنیای آنلاین شدی؛ کد اتاق بالای صفحه است'],netrace:['مسابقهٔ گروهی','','🚦 آماده باش!'],free:['حالت آزاد','رانندگی آزاد بدون زمان؛ تعمیرگاه 🔧 در شهر هست','حالت آزاد؛ دایرهٔ نارنجی تعمیرگاه است'],cp:['چک‌پوینت','۸ دایرهٔ سبز را قبل از تمام شدن زمان بگیر','به دایرهٔ سبز برس!'],esc:['فرار از پلیس','۹۰ ثانیه از دست پلیس‌ها زنده بمان','پلیس‌ها دنبالتند! فرار کن'],
 del:['تحویل بار','بار را از نقطهٔ آبی بردار و به نقطهٔ سبز برسان. تصادف با بار خطرناک‌تر است','برو سراغ نقطهٔ آبی'],race:['مسابقه','قبل از ۳ رقیب به ۴ نقطه برس','مسابقه شروع شد!']},GOALS={cp:8,del:6};
 let pgT=0,GL=8,DUR=90,TF=1,RSP=22,curStage=-1,paused=0,wxF=-1,rep=null,repT=0,rpt=0,dailyRun=0,pend=null,ST={},playing=0,score=0,cpN=0,tleft=0,health=100,tgt=[0,0],mis='cp',carry=0,rs=[0,0,0],pg='main';
 const up=k=>SV.up[SV.car+':'+k]||0;
@@ -354,7 +357,7 @@ const rac=[];for(let i=0;i<3;i++){const o=mk('sport',[0xff7a1a,0x39a0ff,0xf0f0f0
 let gseed=1,rec=[],recT=0,el=0,gkey='';const trnd=()=>(gseed=(gseed*16807)%2147483647)/2147483647;
 function newTarget(){for(let t=0;t<20;t++){const i=Math.round(P.x/C)+Math.floor(trnd()*11)-5,j=Math.round(P.z/C)+Math.floor(trnd()*11)-5,d=Math.hypot(i*C-P.x,j*C-P.z);if((d>200&&d<420)||t==19){tgt=[i*C,j*C];tleft+=Math.round((d/11+14)*TF*DFS[SV.diff].t);break}}
 mk2.position.x=ring.position.x=tgt[0];mk2.position.z=ring.position.z=tgt[1];const c=(mis=='del'&&!carry)?0x3aa0ff:0x39ff88;mk2.material.color.set(c);ring.material.color.set(c)}
-function dmg(a,dx,dz){if(!playing)return;if(dx===undefined){const sg=Math.sign(P.v)||1;dx=Math.sin(P.h)*sg;dz=Math.cos(P.h)*sg}dent(dx,dz,a);vib(Math.min(250,a*8));health=Math.max(0,health-a*ST.arm*DFS[SV.diff].d*(mis=='del'&&carry?1.6:1));if(health<=0){if(mis=='free')wreck();else endGame(0,'ماشین نابود شد')}}
+function dmg(a,dx,dz){if(!playing)return;if(dx===undefined){const sg=Math.sign(P.v)||1;dx=Math.sin(P.h)*sg;dz=Math.cos(P.h)*sg}dent(dx,dz,a);vib(Math.min(250,a*8));health=Math.max(0,health-a*ST.arm*DFS[SV.diff].d*(mis=='del'&&carry?1.6:1));if(health<=0){if(FRM())wreck();else endGame(0,'ماشین نابود شد')}}
 function take(w){if(mis=='race'){if(w){rs[w-1]++;if(rs[w-1]>=GL){endGame(0,'رقیب زودتر رسید');return}say('رقیب نقطه را گرفت',1)}else{cpN++;score+=300;if(cpN>=GL){endGame(1,'مسابقه را بردی');return}say('نقطه را گرفتی '+cpN+'/'+GL,1.2)}newTarget();return}
 cpN++;score+=500+tleft*10;health=Math.min(100,health+20);if(mis=='del')carry^=1;if(cpN>=GL){endGame(1,mis=='del'?'همهٔ بارها تحویل شد':'همهٔ نقطه‌ها را گرفتی');return}
 newTarget();say(mis=='del'?(carry?'بار برداشته شد؛ به نقطهٔ سبز برو':'تحویل شد ✓'):'نقطه '+cpN+' از '+GL+' ✓',1.5)}
@@ -372,34 +375,52 @@ for(let i=ci-6;i<=ci+6;i++)for(let j=cj-6;j<=cj+6;j++)if(hr(i,j,66)<.06){const d
 if(best){tgt=best;rep=best;mk2.position.x=ring.position.x=best[0];mk2.position.z=ring.position.z=best[1];mk2.material.color.set(0xff8a2a);ring.material.color.set(0xff8a2a)}}
 const dx=tgt[0]-P.x,dz=tgt[1]-P.z,dg=Math.hypot(dx,dz);$('ar').style.transform='rotate('+(-wr(Math.atan2(dx,dz)-P.h))+'rad)';$('dist').textContent=Math.round(dg)+' m';
 if(dg<14&&Math.abs(P.v)<6){rpt+=dt;if(rpt>1.5&&(health<100||nitE<100)){health=100;nitE=100;rpt=0;setCar();say('🔧 ماشین تعمیر و پر شد',1.5)}}else rpt=0;
-$('info').textContent='🔧 '+Math.round(dg)+' m | ❤️ '+Math.round(health)+'%'}
-function startGame(m,o){o=o||{};if(!SV.tut){SV.tut=1;save();pend=[m,o];page('tut');return}aud();setCar();setTheme(o.th!==undefined?o.th:SV.th);mis=m;ov.style.display='none';playing=1;paused=0;score=0;cpN=0;health=100;nitE=100;tleft=0;heat=0;bust=0;carry=0;rs=[0,0,0];
-GL=o.g||GOALS[m]||8;DUR=o.d||90;TF=o.tf||1;RSP=o.rs||22;wxF=o.wx===undefined?-1:o.wx;if(o.tod)todMode=o.tod;curStage=o.stage===undefined?-1:o.stage;dailyRun=o.daily?1:0;gseed=o.stage!==undefined?1000+o.stage*77:o.daily?([...today()].reduce((a,c)=>(a*31+c.charCodeAt(0))%2147483647,7)||1):((Date.now()%99991)+1);ghostStart(m!='esc'&&m!='free'?(o.stage!==undefined?'s'+o.stage:o.daily?'d'+today():''):'');
-clearCops();P.x=-LANE;P.z=-20;P.h=0;P.vh=0;P.v=0;P.steer=0;P.y=0;P.vy=0;P.air=0;P.rv=0;gear=1;setGear();
+$('info').textContent='🔧 '+Math.round(dg)+' m | ❤️ '+Math.round(health)+'%'+(net.on?' | 🌐 '+net.room+' ('+(net.peers.size+1)+')':'')}
+function startGame(m,o){o=o||{};if(!SV.tut&&m!='net'&&m!='netrace'){SV.tut=1;save();pend=[m,o];page('tut');return}aud();setCar();setTheme(m=='net'||m=='netrace'?0:(o.th!==undefined?o.th:SV.th));mis=m;ov.style.display='none';playing=1;paused=0;score=0;cpN=0;health=100;nitE=100;tleft=0;heat=0;bust=0;carry=0;rs=[0,0,0];
+GL=o.g||GOALS[m]||8;DUR=o.d||90;TF=o.tf||1;RSP=o.rs||22;if(m=='netrace'&&NR)GL=NR.targets.length;wxF=o.wx===undefined?-1:o.wx;if(o.tod)todMode=o.tod;curStage=o.stage===undefined?-1:o.stage;dailyRun=o.daily?1:0;gseed=o.stage!==undefined?1000+o.stage*77:o.daily?([...today()].reduce((a,c)=>(a*31+c.charCodeAt(0))%2147483647,7)||1):((Date.now()%99991)+1);ghostStart(m!='esc'&&m!='free'?(o.stage!==undefined?'s'+o.stage:o.daily?'d'+today():''):'');
+clearCops();P.x=-LANE;P.z=-20;P.h=0;P.vh=0;P.v=0;P.steer=0;P.y=0;P.vy=0;P.air=0;P.rv=0;gear=1;setGear();if(m=='netrace'&&NR){P.x=-6+(NR.idx%3)*6;P.z=-20-Math.floor(NR.idx/3)*7;frozen=3.6;lastC=4}else frozen=0;
 ais.forEach(c=>{c.off=c.race&&m!='race'?1:0;c.g.visible=!c.off&&!c.lim;if(!c.off)spawn(c)});
-if(m=='esc'){tleft=DUR;heat=70;mk2.visible=ring.visible=false}else if(m=='free'){mk2.visible=ring.visible=true;repT=0;rpt=0}else{newTarget();mk2.visible=ring.visible=true}
+if(m=='esc'){tleft=DUR;heat=70;mk2.visible=ring.visible=false}else if(m=='free'||m=='net'){mk2.visible=ring.visible=true;repT=0;rpt=0}else if(m=='netrace'){mk2.visible=ring.visible=true;setNetTarget()}else{newTarget();mk2.visible=ring.visible=true}
 if(m=='race')rac.forEach(c=>c.stun=2.5);say(MIS[m][2],3)}
 const ov=$('ov'),QN=['پایین','متوسط','بالا'];
 const B=(a,t,c,v)=>'<div class="bt '+(c||'')+'" data-a="'+a+'" data-v="'+(v===undefined?'':v)+'">'+t+'</div>',top=()=>'<div style="font-size:14px;margin:4px">🏅 سطح '+lvOf(SV.xp)+' &nbsp; 💰 '+SV.money+' &nbsp; ⭐ بهترین '+SV.best+'</div>';
-function page(n,x){pg=n;let h='';
-if(n=='main')h='<h2 style="margin:6px">اف‌گیم درایور ۳D</h2>'+top()+B('camp','مأموریت‌های داستانی')+B('daily','چالش روزانه'+(SV.daily==today()?' ✅':''),'g')+B('go','حالت آزاد','g','free')+B('mis','مأموریت سریع','g')+B('gar','گاراژ','g')+B('top','رکوردها','g')+B('ach','دستاوردها','g')+B('tut','آموزش','g')+B('set','تنظیمات','g')+'<a class="bt g" href="index.html" style="text-decoration:none">بازی ۲D</a>';
+function page(n,x){if(pg==='chat'&&n!=='chat')chatClose();if(n==='chat'&&pg!=='chat')chatOpen();pg=n;let h='';
+if(n=='main')h='<h2 style="margin:6px">اف‌گیم درایور ۳D</h2>'+top()+B('camp','مأموریت‌های داستانی')+B('daily','چالش روزانه'+(SV.daily==today()?' ✅':''),'g')+B('online','🌐 آنلاین (چندنفره و چت)')+B('go','حالت آزاد','g','free')+B('mis','مأموریت سریع','g')+B('gar','گاراژ','g')+B('top','رکوردها','g')+B('ach','دستاوردها','g')+B('tut','آموزش','g')+B('set','تنظیمات','g')+'<a class="bt g" href="index.html" style="text-decoration:none">بازی ۲D</a>';
 else if(n=='camp')h=top()+STG.map((g,i)=>{const lk=i>0&&!SV.camp[i-1],st=SV.camp[i]||0;return '<div class="bt'+(lk?' g':'')+'" data-a="'+(lk?'lock':'stg')+'" data-v="'+i+'" style="display:flex;justify-content:space-between"><span>'+(lk?'🔒 ':'')+(i+1)+'. '+g.n+' <small>('+MIS[g.m][0]+')</small></span><span>'+'⭐'.repeat(st)+'</span></div>'}).join('')+B('main','بازگشت','g');
 else if(n=='daily'){const d=dailyStage(),dn=SV.daily==today();h=top()+'<div style="margin:6px;line-height:1.9;font-size:14px"><b>'+MIS[d.m][0]+'</b><br>هدف: '+(d.m=='esc'?d.d+' ثانیه':d.g+' نقطه')+(d.wx==2?' | 🌧️ باران':'')+(d.tod==2?' | 🌙 شب':'')+'<br>'+(dn?'✅ جایزهٔ امروز را گرفتی':'🎁 جایزهٔ دو برابر')+'</div>'+B('dstart',dn?'دوباره (بدون جایزهٔ ویژه)':'شروع چالش')+B('main','بازگشت','g')}
 else if(n=='ach')h=top()+ACH.map(a=>{const d=SV.ach.includes(a.id);return '<div class="row" style="'+(d?'':'opacity:.55')+'"><span>'+(d?'🏆 ':'🔒 ')+'<b>'+a.n+'</b><br><small>'+a.d+'</small></span><span>💰 '+a.r+'</span></div>'}).join('')+'<div style="font-size:12px;margin:8px;opacity:.8">'+Math.round(SV.stat.km*10)/10+' کیلومتر · '+SV.stat.jumps+' پرش · '+Math.round(SV.stat.drift)+' ثانیه دریفت</div>'+B('main','بازگشت','g');
 else if(n=='cust')h=top()+Object.keys(CZ).map(k=>{const cur=(SV.cz[SV.car]||{})[k]||0;return '<div style="margin:6px 4px;text-align:right;font-size:13px">'+CZ[k][0]+'</div><div class="sc">'+CZ[k][1].map((nm,i)=>{const pr=CZ[k][2][i],ow=!pr||SV.cown.includes(SV.car+':'+k+i);return '<div class="cd'+(cur==i?' sel':'')+'" data-a="cz" data-v="'+k+':'+i+'" style="min-width:84px">'+nm+'<br>'+(cur==i?'✔':ow?'مال شما':'💰 '+pr)+'</div>'}).join('')+'</div>'}).join('')+B('gar','بازگشت','g');
+else if(n=='online')h=top()+'<div style="margin:4px;font-size:13px">👤 '+esc(nick())+(navigator.onLine?'':' &nbsp; ⚠️ اینترنت قطع است')+'</div>'+B('nmk','🏠 ساخت اتاق (رانندگی آزاد)')+B('nrk','🏁 ساخت اتاق (مسابقه)','g')+B('njn','🔑 پیوستن با کد اتاق','g')+B('npub','🌍 اتاق عمومی (همه با هم)','g')+B('chat','💬 گفتگوی عمومی','g')+B('nname','✏️ تغییر نام','g')+B('main','بازگشت','g');
+else if(n=='njn')h='<div style="margin:6px">کد اتاق را وارد کن</div><input id="jc" maxlength="8" autocomplete="off" style="width:60%;padding:10px;border-radius:10px;border:1px solid #fff4;background:#111a33;color:#fff;font-size:20px;letter-spacing:4px;text-align:center;text-transform:uppercase">'+B('njgo','ورود')+B('online','بازگشت','g');
+else if(n=='nname')h='<div style="margin:6px">نام نمایشی (۲ تا ۱۴ حرف)</div><input id="ni" maxlength="14" autocomplete="off" value="'+esc(nick())+'" style="width:70%;padding:10px;border-radius:10px;border:1px solid #fff4;background:#111a33;color:#fff;font-size:18px;text-align:center">'+B('nsave','ذخیره')+B('online','بازگشت','g');
+else if(n=='wait')h='<div style="margin:14px;font-size:16px">⏳ در حال اتصال به اتاق '+esc(net.room)+'…</div>'+B('nleave','انصراف','g');
+else if(n=='lobby')h='<h2 style="margin:6px">🏁 اتاق مسابقه</h2><div style="font-size:24px;letter-spacing:4px;margin:4px">'+esc(net.room)+'</div><div style="font-size:12px;opacity:.8;margin-bottom:4px">این کد را به دوستانت بده تا از «پیوستن با کد» وارد شوند</div><div id="lpl">'+lobbyHtml()+'</div>'+(net.host?B('nstart','🚦 شروع مسابقه'):'<div style="margin:8px;font-size:13px">⏳ منتظر شروع میزبان…</div>')+B('nleave','خروج از اتاق','g');
+else if(n=='chat')h='<div style="font-size:12px;opacity:.8;margin:4px">👥 '+([...lobby.values()].filter(t=>Date.now()-t<20000).length+1)+' نفر آنلاین · پیام‌ها عمومی‌اند؛ اطلاعات شخصی ننویس. روی اسم بزن تا بی‌صدا شود.</div><div id="clog" style="height:96px;overflow-y:auto;background:#0b1024aa;border-radius:10px;margin:4px;touch-action:pan-y">'+chatHtml()+'</div><div style="display:flex;gap:6px;margin:4px"><input id="cti" maxlength="140" autocomplete="off" placeholder="پیام…" style="flex:1;padding:8px;border-radius:10px;border:1px solid #fff4;background:#111a33;color:#fff;font-size:15px"><div class="bt" data-a="csend" style="margin:0;padding:8px 14px">ارسال</div></div>'+quickHtml()+B('online','بازگشت','g');
 else if(n=='pause')h='<h2 style="margin:6px">⏸ مکث</h2>'+B('resume','ادامه')+B('photo','📷 حالت عکس','g')+B('quit','خروج به منو','g');
-else if(n=='mis')h=top()+Object.keys(MIS).map(k=>B('go','<b>'+MIS[k][0]+'</b><br><small>'+MIS[k][1]+'</small>','',k)).join('')+B('main','بازگشت','g');
+else if(n=='mis')h=top()+Object.keys(MIS).filter(k=>k!='net'&&k!='netrace').map(k=>B('go','<b>'+MIS[k][0]+'</b><br><small>'+MIS[k][1]+'</small>','',k)).join('')+B('main','بازگشت','g');
 else if(n=='gar')h=top()+'<div class="sc">'+CARS.map(c=>'<div class="cd'+(c.id==SV.car?' sel':'')+'" data-a="car" data-v="'+c.id+'"><b>'+c.n+'</b><br>'+(SV.owned.includes(c.id)?(c.id==SV.car?'انتخاب‌شده':'مال شما'):(lvOf(SV.xp)<c.lv?'🔒 سطح '+c.lv:'💰 '+c.p))+'<br>🚀'+c.vm+' ⚡'+c.ac+'</div>').join('')+'</div>'
 +'<div>'+COLS.map((c,i)=>'<span class="dot" style="background:#'+c.toString(16).padStart(6,'0')+'" data-a="col" data-v="'+i+'"></span>').join('')+'</div>'
 +UPS.map(u=>{const l=up(u[0]);return '<div class="row"><span>'+u[1]+' سطح '+l+'/3</span>'+(l<3?'<span class="bt" style="margin:0;padding:6px 12px;font-size:14px" data-a="up" data-v="'+u[0]+'">ارتقا 💰'+1500*(l+1)+'</span>':'<span>حداکثر</span>')+'</div>'}).join('')+B('cust','شخصی‌سازی ظاهر ماشین')+B('main','بازگشت','g');
 else if(n=='set')h=[['کیفیت گرافیک',QN[SV.q],'q'],['آینه‌ها',SV.mir?'روشن':'خاموش','mir'],['لرزش',SV.vib?'روشن':'خاموش','vib'],['صدا',SV.vol*100+'٪','vol'],['فرمان گوشی',SV.inv?'معکوس':'عادی','inv'],['کیفیت خودکار',SV.auto?'روشن':'خاموش','auto'],['موسیقی',SV.mus?'روشن':'خاموش','mus'],['فرمان',SV.wheel?'چرخ لمسی':'دکمه‌ها','wheel'],['اندازهٔ دکمه‌ها',['کوچک','متوسط','بزرگ'][SV.bs],'bs'],['شفافیت دکمه‌ها',['کم','متوسط','کامل'][SV.bo],'bo'],['سختی بازی',['آسان','معمولی','سخت'][SV.diff],'diff'],['محیط شهر',['شهری','کویر','برفی'][SV.th],'th'],['آب‌وهوا',['خودکار','صاف','باران','مه'][SV.wx],'wx'],['حساسیت فرمان',SV.sens==1?'متوسط':SV.sens>1?'زیاد':'کم','sens']]
 .map(r=>'<div class="bt g" data-a="s" data-v="'+r[2]+'" style="display:flex;justify-content:space-between"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>').join('')+B('main','بازگشت','g');
 else if(n=='tut')h='<div style="text-align:right;line-height:2;font-size:14px;padding:6px 10px">🟢 <b>گاز</b> و 🔴 <b>ترمز</b> سمت راست؛ دکمهٔ <b>دنده عقب</b> را نگه دار تا ماشین عقب برود.<br>◀ ▶ فرمان؛ یا «فرمان گوشی» را بزن و گوشی را مثل فرمان بچرخان.<br>🔥 نیترو شتاب می‌دهد، «ترمز دستی» برای دریفت است و 📢 بوق.<br>🎥 دکمهٔ «دوربین» بین نمای بیرون و داخل ماشین عوض می‌کند.<br>🟩 به دایره‌های سبز برس. 🚓 سرعت بالا، تصادف، رد شدن از چراغ قرمز یا زدن به عابر، پلیس را تحریک می‌کند.<br>❤️ نوار سبز بالا سلامت ماشین و ★ سطح تعقیب پلیس است.</div>'+B('pend','متوجه شدم، شروع');
-else if(n=='top')h=Object.keys(MIS).map(k=>'<div class="row"><b>'+MIS[k][0]+'</b><span>'+((SV.top[k]||[]).join(' · ')||'—')+'</span></div>').join('')+B('main','بازگشت','g');
-else if(n=='end'){const nx=curStage>=0&&x.win&&curStage+1<STG.length;h='<h2 style="margin:6px">'+(x.win?'برنده شدی! 🏆':'باختی')+'</h2><div style="margin:4px;font-size:15px">'+x.why+'<br>'+(x.st?'⭐'.repeat(x.st)+'<br>':'')+'امتیاز '+Math.round(score)+' &nbsp; 💰 +'+x.rw+' &nbsp; ✨ '+x.xg+' XP'+(x.lvUp?'<br>'+x.lvUp:'')+(x.gt?'<br>⏱ '+x.gt+' ثانیه'+(x.nb?' 🏆 رکورد جدید!':''):'')+'<br>🏅 '+x.L.join(' · ')+'</div>'+(nx?B('stg','مرحلهٔ بعد','',curStage+1):'')+B(dailyRun?'dstart':curStage>=0?'stg':'go','دوباره','',curStage>=0?curStage:mis)+B('main','منو','g')}
-const TT={cust:'شخصی‌سازی',ach:'دستاوردها',camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="'+(n=='cust'?'gar':'main')+'" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';pgT=performance.now();ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
+else if(n=='top')h=Object.keys(MIS).filter(k=>k!='net'&&k!='netrace').map(k=>'<div class="row"><b>'+MIS[k][0]+'</b><span>'+((SV.top[k]||[]).join(' · ')||'—')+'</span></div>').join('')+B('main','بازگشت','g');
+else if(n=='end'){const nx=curStage>=0&&x.win&&curStage+1<STG.length;h='<h2 style="margin:6px">'+(x.win?'برنده شدی! 🏆':'باختی')+'</h2><div style="margin:4px;font-size:15px">'+x.why+'<br>'+(x.st?'⭐'.repeat(x.st)+'<br>':'')+'امتیاز '+Math.round(score)+' &nbsp; 💰 +'+x.rw+' &nbsp; ✨ '+x.xg+' XP'+(x.lvUp?'<br>'+x.lvUp:'')+(x.gt?'<br>⏱ '+x.gt+' ثانیه'+(x.nb?' 🏆 رکورد جدید!':''):'')+'<br>🏅 '+x.L.join(' · ')+'</div>'+(nx?B('stg','مرحلهٔ بعد','',curStage+1):'')+(mis=='netrace'?B('online','🌐 بازگشت به آنلاین'):B(dailyRun?'dstart':curStage>=0?'stg':'go','دوباره','',curStage>=0?curStage:mis))+B('main','منو','g')}
+const TT={online:'آنلاین',njn:'پیوستن',nname:'نام نمایشی',wait:'اتصال',lobby:'اتاق',chat:'گفتگوی عمومی',cust:'شخصی‌سازی',ach:'دستاوردها',camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="'+(n=='cust'?'gar':['njn','nname','chat','lobby','wait'].includes(n)?'online':'main')+'" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';pgT=performance.now();ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
 function act(a,v){aud();
-if(a=='main'||a=='mis'||a=='gar'||a=='set'||a=='top'||a=='camp'||a=='daily'||a=='cust'||a=='ach')page(a);else if(a=='cz'){const[k,i]=v.split(':'),pr=CZ[k][2][+i],key=SV.car+':'+k+i;if(pr&&!SV.cown.includes(key)){if(SV.money<pr){say('پول کافی نیست',1.5);return}SV.money-=pr;SV.cown.push(key)}(SV.cz[SV.car]=SV.cz[SV.car]||{})[k]=+i;save();setCar();page('cust')}else if(a=='tut'){pend=['cp',{}];page('tut')}else if(a=='pend')startGame(pend[0],pend[1]);else if(a=='stg')startGame(STG[v].m,Object.assign({stage:+v},STG[v]));else if(a=='dstart')startGame(dailyStage().m,Object.assign({daily:1},dailyStage()));else if(a=='lock')say('اول مرحلهٔ قبل را ببر',1.5);else if(a=='photo'){photo=1;pa=Math.PI+P.h+.6;pdist=7;pel=0;ov.style.display='none';document.body.classList.add('ph')}else if(a=='resume'){paused=0;ov.style.display='none'}else if(a=='quit'){paused=0;playing=0;heat=0;clearCops();if(gh.car)gh.car.g.visible=false;K.gas=K.brk=0;mk2.visible=ring.visible=false;page('main')}else if(a=='go')startGame(v);
+if(a=='main'||a=='mis'||a=='gar'||a=='set'||a=='top'||a=='camp'||a=='daily'||a=='cust'||a=='ach'||a=='njn'||a=='nname'||a=='chat')page(a);
+else if(a=='online'){netLeave();page('online')}
+else if(a=='nmk'){const c=genCode();netJoin(c,1,'free');startGame('net');say('کد اتاق: '+c,5)}
+else if(a=='nrk'){netJoin(genCode(),1,'race');page('lobby')}
+else if(a=='njgo'){const c=($('jc').value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);if(c.length<3){say('کد معتبر نیست',1.5);return}netJoin(c,0,'free');net.joining=1;page('wait')}
+else if(a=='npub'){netJoin('PUBLIC',0,'free');startGame('net')}
+else if(a=='nsave'){const v=clean($('ni').value).trim().slice(0,14);if(v.length<2){say('نام کوتاه است',1.5);return}SV.nick=v;save();page('online')}
+else if(a=='nstart'){const seed=Math.floor(Math.random()*1e9)+1;netPub(TP(net.room),{t:'s',i:NET.id,seed});startNetRace(seed)}
+else if(a=='nleave'){netLeave();page('online')}
+else if(a=='csend'){const i=$('cti');if(i&&chatSend(i.value))i.value=''}
+else if(a=='cq')chatSend(QP[+v]);
+else if(a=='mute'){net.muted.add(v);say('🔇 بی‌صدا شد',1.5)}
+else if(a=='cz'){const[k,i]=v.split(':'),pr=CZ[k][2][+i],key=SV.car+':'+k+i;if(pr&&!SV.cown.includes(key)){if(SV.money<pr){say('پول کافی نیست',1.5);return}SV.money-=pr;SV.cown.push(key)}(SV.cz[SV.car]=SV.cz[SV.car]||{})[k]=+i;save();setCar();page('cust')}else if(a=='tut'){pend=['cp',{}];page('tut')}else if(a=='pend')startGame(pend[0],pend[1]);else if(a=='stg')startGame(STG[v].m,Object.assign({stage:+v},STG[v]));else if(a=='dstart')startGame(dailyStage().m,Object.assign({daily:1},dailyStage()));else if(a=='lock')say('اول مرحلهٔ قبل را ببر',1.5);else if(a=='photo'){photo=1;pa=Math.PI+P.h+.6;pdist=7;pel=0;ov.style.display='none';document.body.classList.add('ph')}else if(a=='resume'){paused=0;ov.style.display='none'}else if(a=='quit'){paused=0;playing=0;heat=0;clearCops();netLeave();if(gh.car)gh.car.g.visible=false;K.gas=K.brk=0;mk2.visible=ring.visible=false;page('main')}else if(a=='go')startGame(v);
 else if(a=='car'){const c=CARS.find(x=>x.id==v);if(!SV.owned.includes(v)){if(lvOf(SV.xp)<c.lv){say('سطح '+c.lv+' لازم است',1.5);return}if(SV.money<c.p){say('پول کافی نیست',1.5);return}SV.money-=c.p;SV.owned.push(v)}SV.car=v;save();setCar();page('gar')}
 else if(a=='col'){SV.col[SV.car]=+v;save();setCar();page('gar')}
 else if(a=='up'){const k=SV.car+':'+v,l=SV.up[k]||0,cost=1500*(l+1);if(l>=3)return;if(SV.money<cost){say('پول کافی نیست',1.5);return}SV.money-=cost;SV.up[k]=l+1;save();stats();page('gar')}
@@ -420,6 +441,7 @@ mc.stroke();
 if(mis!='esc'){const dx=tgt[0]-P.x,dz=tgt[1]-P.z,dg=Math.hypot(dx,dz),f=dg>190?190/dg:1;mc.fillStyle='#39ff88';mc.beginPath();mc.arc(P.x+dx*f,P.z+dz*f,24,0,6.2832);mc.fill()}
 for(const o of ais)if(o.cop){mc.fillStyle=Math.sin(t*10)>0?'#ff3030':'#3a78ff';mc.beginPath();mc.arc(o.vx,o.vz,16,0,6.2832);mc.fill()}
 mc.fillStyle='#ff8a2a';for(let i=Math.round(P.x/C)-4;i<=Math.round(P.x/C)+4;i++)for(let j=Math.round(P.z/C)-4;j<=Math.round(P.z/C)+4;j++)if(hr(i,j,66)<.06){mc.beginPath();mc.arc(i*C,j*C,18,0,6.2832);mc.fill()}
+if(net.on)for(const p of net.peers.values())if(p.g){mc.fillStyle='#34e0ff';mc.beginPath();mc.arc(p.x,p.z,16,0,6.2832);mc.fill()}
 for(const b of RB){mc.fillStyle='#ff3030';for(const q of b.pts)mc.fillRect(q[0]-9,q[1]-9,18,18)}for(const s2 of SP){mc.fillStyle='#ffd23c';mc.fillRect(s2.x-10,s2.z-10,20,20)}
 mc.restore();mc.setTransform(1,0,0,1,0,0);mc.fillStyle='#fff';mc.beginPath();mc.moveTo(50,42);mc.lineTo(44,57);mc.lineTo(56,57);mc.fill()}
 // ---------- stage 2: weather, traffic lights, pedestrians, smoke, drift ----------
@@ -528,27 +550,108 @@ const dot=(X,Z,col,r)=>{fq.fillStyle=col;fq.beginPath();fq.arc(sx(X),sy(Z),r,0,6
 for(let i=Math.floor((fcx-hw)/C);i<=Math.ceil((fcx+hw)/C);i++)for(let j=Math.floor((fcz-hh)/C);j<=Math.ceil((fcz+hh)/C);j++){if(hr(i,j,66)<.06)dot(i*C,j*C,'#ff8a2a',6);if(fk>.25){if(RMP(i,j,0)){fq.fillStyle='#ffd23c';fq.fillRect(sx(i*C-4)-3,sy(j*C+30)-3,6,6)}if(RMP(i,j,1)){fq.fillStyle='#ffd23c';fq.fillRect(sx(i*C+30)-3,sy(j*C+4)-3,6,6)}}}
 if(mis!='esc'&&mis!='free'){fq.strokeStyle='#39ff88';fq.setLineDash([6,6]);fq.lineWidth=2;fq.beginPath();fq.moveTo(sx(P.x),sy(P.z));fq.lineTo(sx(tgt[0]),sy(tgt[1]));fq.stroke();fq.setLineDash([]);dot(tgt[0],tgt[1],'#39ff88',9)}
 for(const o of ais){if(o.off||o.lim)continue;if(o.cop)dot(o.vx,o.vz,Math.sin(t*10)>0?'#ff3030':'#3a78ff',5);else if(o.amb)dot(o.vx,o.vz,'#ffffff',5)}
+if(net.on)for(const p of net.peers.values())if(p.g)dot(p.x,p.z,'#34e0ff',5);
 for(const b of RB)for(const q of b.pts)dot(q[0],q[1],'#ff3030',4);for(const s2 of SP)dot(s2.x,s2.z,'#ffd23c',4);
 fq.save();fq.translate(sx(P.x),sy(P.z));fq.rotate(-P.h);fq.fillStyle='#fff';fq.strokeStyle='#0a1226';fq.lineWidth=2;fq.beginPath();fq.moveTo(0,-11);fq.lineTo(-8,9);fq.lineTo(0,5);fq.lineTo(8,9);fq.closePath();fq.fill();fq.stroke();fq.restore();
 fq.strokeStyle='#fff';fq.lineWidth=3;fq.beginPath();fq.moveTo(20,H2-18);fq.lineTo(20+100*fk,H2-18);fq.stroke();fq.fillStyle='#fff';fq.font='14px sans-serif';fq.textAlign='left';fq.fillText('100 m',20,H2-26)}
 $('mm').addEventListener('pointerup',openMap);$('fx').addEventListener('pointerup',closeMap);$('fc').addEventListener('pointerup',()=>{fcx=P.x;fcz=P.z;drawFull()});
 $('fz1').addEventListener('pointerup',()=>{fk=Math.min(1.4,fk*1.4);drawFull()});$('fz2').addEventListener('pointerup',()=>{fk=Math.max(.07,fk/1.4);drawFull()});
 {let dr=null;fc.addEventListener('pointerdown',e=>{dr=[e.clientX,e.clientY];fc.setPointerCapture(e.pointerId)});fc.addEventListener('pointermove',e=>{if(!dr)return;const r=fc.getBoundingClientRect(),k=fc.width/r.width;fcx+=(e.clientX-dr[0])*k/fk;fcz+=(e.clientY-dr[1])*k/fk;dr=[e.clientX,e.clientY];drawFull()});const up=()=>dr=null;fc.addEventListener('pointerup',up);fc.addEventListener('pointercancel',up)}
+// ---------- online: MQTT client, rooms, chat, remote players ----------
+const BROKERS=window.FG_BROKERS||['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt','wss://test.mosquitto.org:8081/mqtt'];
+const NET={ws:null,state:'off',bi:0,subs:new Map(),buf:new Uint8Array(0),ping:0,last:0,rt:0,want:0,id:Math.random().toString(36).slice(2,10)};
+const te=new TextEncoder(),td=new TextDecoder(),TP=r=>'fgame3d/v1/r/'+r,CHAT_T='fgame3d/v1/chat',QP=['سلام 👋','عالی بود! 👏','مسابقه بدیم؟ 🏁','منتظرم باش','😂','ببخشید!','برو بریم!'];
+const mqStr=s=>{const b=te.encode(s);return[b.length>>8,b.length&255,...b]};
+const mqLen=n=>{const o=[];do{let d=n%128;n=Math.floor(n/128);if(n>0)d|=128;o.push(d)}while(n>0);return o};
+function mqSend(type,body){if(!NET.ws||NET.ws.readyState!==1)return false;NET.ws.send(new Uint8Array([type,...mqLen(body.length),...body]));return true}
+const mqSub=t=>mqSend(0x82,[0,1,...mqStr(t),0]);
+function netSub(t,fn){NET.subs.set(t,fn);if(NET.state==='on')mqSub(t)}
+function netUnsub(t){NET.subs.delete(t);if(NET.state==='on')mqSend(0xA2,[0,2,...mqStr(t)]);if(!NET.subs.size){NET.want=0;clearTimeout(NET.rt);clearInterval(NET.ping);if(NET.ws){try{NET.ws.close()}catch(e){}NET.ws=null}NET.state='off'}}
+function netPub(t,o){return mqSend(0x30,[...mqStr(t),...te.encode(JSON.stringify(o))])}
+function netConnect(){NET.want=1;if(NET.state==='on'||NET.state==='connecting')return;NET.state='connecting';let ws;try{ws=new WebSocket(BROKERS[NET.bi%BROKERS.length],'mqtt')}catch(e){return netRetry()}
+ws.binaryType='arraybuffer';NET.ws=ws;NET.buf=new Uint8Array(0);
+ws.onopen=()=>mqSend(0x10,[0,4,77,81,84,84,4,2,0,30,...mqStr('f3d'+NET.id)]);
+ws.onmessage=e=>{NET.last=Date.now();const a=new Uint8Array(e.data),b=new Uint8Array(NET.buf.length+a.length);b.set(NET.buf);b.set(a,NET.buf.length);NET.buf=b;mqParse()};
+ws.onclose=()=>{if(NET.ws===ws){NET.ws=null;NET.state='off';clearInterval(NET.ping);if(NET.want)netRetry()}};ws.onerror=()=>{try{ws.close()}catch(e){}}}
+function netRetry(){NET.bi++;NET.state='off';clearTimeout(NET.rt);NET.rt=setTimeout(()=>{if(NET.want)netConnect()},1800)}
+function mqParse(){for(;;){const b=NET.buf;if(b.length<2)return;let mul=1,len=0,i=1,d;do{if(i>=b.length)return;d=b[i++];len+=(d&127)*mul;mul*=128}while(d&128);if(b.length<i+len)return;const type=b[0]>>4,flags=b[0],body=b.subarray(i,i+len);NET.buf=b.slice(i+len);
+if(type===2){NET.state='on';for(const t of NET.subs.keys())mqSub(t);clearInterval(NET.ping);NET.ping=setInterval(()=>{if(Date.now()-NET.last>70000){try{NET.ws.close()}catch(e){}}else mqSend(0xC0,[])},20000);if(net.on)netHello();if(chatOn)chatHello()}
+else if(type===3){const tl=(body[0]<<8)|body[1],topic=td.decode(body.subarray(2,2+tl));let o=2+tl;if(((flags>>1)&3)>0)o+=2;const fn=NET.subs.get(topic);if(fn){let m=null;try{m=JSON.parse(td.decode(body.subarray(o)))}catch(e){}if(m)try{fn(m)}catch(e){}}}}}
+const net={on:0,room:'',host:0,mode:'free',peers:new Map(),muted:new Set(),chat:[],lastSend:0,sendT:0,hello:0,lh:0,joinT:0,joining:0},lobby=new Map();
+let chatOn=0,NR=null,frozen=0,lastC=0;
+const nick=()=>SV.nick||(SV.nick='راننده'+(100+Math.floor(Math.random()*900))),FRM=()=>mis=='free'||mis=='net'||mis=='netrace';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const BADRE=/کیر|کون|جنده|کثافت|fuck|shit|bitch/gi;
+function clean(s){return String(s).replace(/<[^>]*>/g,'').replace(/https?:\/\/\S+|www\.\S+/gi,'***').replace(BADRE,'***').slice(0,140)}
+const genCode=()=>{const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<5;i++)s+=c[Math.floor(Math.random()*c.length)];return s};
+function netHello(){if(net.on)netPub(TP(net.room),{t:'h',i:NET.id,n:nick(),m:net.mode,h:net.host?1:0})}
+function netJoin(room,host,mode){netLeave();net.room=room;net.host=host;net.mode=mode;net.on=1;net.joining=0;net.joinT=Date.now();net.sendT=0;netSub(TP(room),onNetMsg);netConnect();netHello();clearInterval(net.hello);net.hello=setInterval(netHello,5000)}
+function netLeave(){if(!net.on)return;netPub(TP(net.room),{t:'b',i:NET.id});clearInterval(net.hello);const r=net.room;net.on=0;net.joining=0;for(const p of net.peers.values())rmPeer(p);net.peers.clear();NR=null;frozen=0;netUnsub(TP(r))}
+function newPeer(id){return{id,name:'؟',car:'',col:0,g:null,x:0,z:0,h:0,tx:0,tz:0,th:0,tv:0,ty:0,pt:0,seen:performance.now(),k:0,init:0,host:0,said:0}}
+function makeTag(name){const c=document.createElement('canvas');c.width=256;c.height=64;const x=c.getContext('2d');x.fillStyle='rgba(8,14,34,.72)';x.fillRect(0,8,256,48);x.fillStyle='#fff';x.font='bold 28px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(name,128,32);const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;const s=new T.Sprite(new T.SpriteMaterial({map:t,transparent:true,depthTest:false}));s.scale.set(5,1.25,1);s.position.y=2.9;s.renderOrder=10;return s}
+function dropG(g){g.traverse(m=>{if(m.geometry)m.geometry.dispose();if(m.material&&m.material.map)m.material.map.dispose()})}
+function setPeerCar(p,carId,col){if(p.g){sc.remove(p.g);dropG(p.g)}const c=CARS.find(x=>x.id==carId)||CARS[0],m=mk(c.ty,COLS[col]||COLS[0],0,1);p.car=carId;p.col=col;p.g=m.g;p.g.add(makeTag(p.name));p.init=0;sc.add(p.g)}
+function rmPeer(p){if(p.g){sc.remove(p.g);dropG(p.g);p.g=null}}
+function onNetMsg(m){if(!m||typeof m!=='object'||typeof m.i!=='string'||m.i===NET.id)return;const now=performance.now();let p=net.peers.get(m.i);
+if(m.t==='b'){if(p){rmPeer(p);net.peers.delete(m.i)}return}
+if(!p){if(net.peers.size>=7)return;p=newPeer(m.i);net.peers.set(m.i,p)}
+p.seen=now;if(m.n)p.name=clean(String(m.n)).slice(0,14)||'؟';
+if(m.t==='p'){if(typeof m.x!=='number'||typeof m.z!=='number')return;p.tx=m.x;p.tz=m.z;p.th=+m.h||0;p.tv=+m.v||0;p.ty=+m.y||0;p.pt=now;p.k=m.g|0;if(!p.g||String(m.c||'')!==p.car||(m.k|0)!==p.col)setPeerCar(p,String(m.c||''),m.k|0)}
+else if(m.t==='h'){if(m.h){p.host=1;if(m.m){net.mode=m.m;if(net.joining){net.joining=0;if(m.m==='race')page('lobby');else startGame('net')}}}if(!p.said){p.said=1;netHello()}}
+else if(m.t==='c')onChat(m);
+else if(m.t==='s'){if(net.mode==='race'&&net.on)startNetRace(+m.seed)}
+else if(m.t==='g')p.k=m.k|0;
+else if(m.t==='f')netFinish(m.i,m.n)}
+function netStep(dt,t){const inw=net.on&&playing;$('ct').style.display=inw?'':'none';if(!inw&&$('cp').style.display==='block')$('cp').style.display='none';
+if(net.on&&net.joining&&Date.now()-net.joinT>3500){net.joining=0;startGame('net')}
+if(!net.on)return;const now=performance.now();net.sendT-=dt;
+if(playing&&dt>0&&net.sendT<=0&&NET.state==='on'){net.sendT=.125;netPub(TP(net.room),{t:'p',i:NET.id,n:nick(),c:SV.car,k:SV.col[SV.car]??(CARS.find(c=>c.id==SV.car).dc||0),x:+P.x.toFixed(1),z:+P.z.toFixed(1),h:+P.h.toFixed(2),v:+P.v.toFixed(1),y:+P.y.toFixed(1),g:cpN})}
+for(const[id,p]of net.peers){if(now-p.seen>7000){rmPeer(p);net.peers.delete(id);continue}if(!p.g)continue;
+const age=Math.min(.35,(now-p.pt)/1e3),ex=p.tx+Math.sin(p.th)*p.tv*age,ez=p.tz+Math.cos(p.th)*p.tv*age,k=Math.min(1,dt*9);
+if(!p.init){p.x=ex;p.z=ez;p.h=p.th;p.init=1}p.x+=(ex-p.x)*k;p.z+=(ez-p.z)*k;p.h+=wr(p.th-p.h)*k;p.g.position.set(p.x,p.ty,p.z);p.g.rotation.y=p.h;
+const d=Math.hypot(p.x-P.x,p.z-P.z);if(playing&&dt>0&&d<3.1&&d>.01){const nx=(P.x-p.x)/d,nz=(P.z-p.z)/d,ox=P.x+nx*(3.1-d)*.6,oz=P.z+nz*(3.1-d)*.6;if(!solid(ox,oz)){P.x=ox;P.z=oz}P.v*=.85}}}
+// ----- race -----
+function raceTargets(seed,n){let s=seed%2147483647||1;const r=()=>(s=(s*16807)%2147483647)/2147483647,out=[];let px=0,pz=0;for(let k=0;k<n;k++)for(let t=0;t<30;t++){const i=Math.floor(r()*13)-6,j=Math.floor(r()*13)-6,d=Math.hypot(i*C-px,j*C-pz);if((d>200&&d<420)||t==29){out.push([i*C,j*C]);px=i*C;pz=j*C;break}}return out}
+function startNetRace(seed){if(NR&&!NR.over&&playing)return;const ids=[NET.id,...net.peers.keys()].sort();NR={seed,targets:raceTargets(seed,6),over:0,idx:ids.indexOf(NET.id)};startGame('netrace')}
+function setNetTarget(){const t=NR.targets[Math.min(cpN,NR.targets.length-1)];tgt=t;mk2.position.x=ring.position.x=t[0];mk2.position.z=ring.position.z=t[1];mk2.material.color.set(0x39ff88);ring.material.color.set(0x39ff88)}
+function netFinish(id,name){if(!NR||NR.over||mis!=='netrace')return;NR.over=1;const win=id===NET.id;score=cpN*400+(win?600:0);endGame(win,'برنده: '+(win?'تو':clean(String(name||'?'))))}
+function netRaceLogic(dt){if(!NR)return;if(frozen>0){const c=Math.ceil(frozen);if(c!==lastC){lastC=c;if(c<=3)say(''+c,.9)}}else if(lastC!==0){lastC=0;say('🏁 برو!',1)}
+const t=NR.targets[Math.min(cpN,NR.targets.length-1)],dx=t[0]-P.x,dz=t[1]-P.z,dg=Math.hypot(dx,dz);
+if(frozen<=0&&dg<12&&!NR.over){cpN++;netPub(TP(net.room),{t:'g',i:NET.id,k:cpN});if(cpN>=NR.targets.length){netPub(TP(net.room),{t:'f',i:NET.id,n:nick()});netFinish(NET.id,nick());return}setNetTarget();say('نقطه '+cpN+'/'+NR.targets.length+' ✓',1.2)}
+$('ar').style.transform='rotate('+(-wr(Math.atan2(dx,dz)-P.h))+'rad)';$('dist').textContent=Math.round(dg)+' m';let rk=1;for(const p of net.peers.values())if(p.k>cpN)rk++;
+$('info').textContent='🏁 '+cpN+'/'+NR.targets.length+' | رتبه '+rk+'/'+(net.peers.size+1)+' | 🌐 '+net.room}
+// ----- chat -----
+function chatSend(m){m=clean(m).trim();if(!m)return false;const n=Date.now();if(n-net.lastSend<1200){say('کمی صبر کن…',1);return false}const o={t:'c',i:NET.id,n:nick(),m};
+if(net.on)netPub(TP(net.room),o);else if(chatOn)netPub(CHAT_T,o);else return false;net.lastSend=n;onChat(o,1);return true}
+function onChat(o,self){if(!self&&net.muted.has(o.i))return;if(typeof o.m!=='string')return;const l={i:String(o.i),n:clean(String(o.n||'?')).slice(0,14),m:clean(o.m),self:!!self};net.chat.push(l);if(net.chat.length>60)net.chat.shift();toastChat(l);const cl=$('clog');if(cl&&pg==='chat'){cl.innerHTML=chatHtml();cl.scrollTop=cl.scrollHeight}}
+function toastChat(l){const box=$('cl'),d=document.createElement('div');d.style.cssText='background:#0b1024cc;padding:3px 8px;margin-bottom:3px;border-radius:8px;max-width:230px;word-break:break-word';d.textContent=l.n+': '+l.m;box.appendChild(d);while(box.children.length>5)box.firstChild.remove();setTimeout(()=>d.remove(),9000)}
+const chatHtml=()=>net.chat.slice(-40).map(l=>'<div style="text-align:right;margin:3px 6px;font-size:13px;word-break:break-word"><b data-a="mute" data-v="'+esc(l.i)+'" style="color:'+(l.self?'#7dff9a':'#7fd0ff')+'">'+esc(l.n)+'</b>: '+esc(l.m)+'</div>').join('');
+const quickHtml=()=>'<div>'+QP.map((q,i)=>'<div class="cd" data-a="cq" data-v="'+i+'" style="min-width:0;margin:2px;padding:5px 8px;font-size:12px">'+esc(q)+'</div>').join('')+'</div>';
+const lobbyHtml=()=>[['تو ('+esc(nick())+')',net.host],...[...net.peers.values()].map(p=>[esc(p.name),p.host])].map(x=>'<div class="row" style="justify-content:flex-start;margin:3px 8px">👤 '+x[0]+(x[1]?' ⭐ میزبان':'')+'</div>').join('');
+function chatHello(){netPub(CHAT_T,{t:'h',i:NET.id,n:nick()})}
+function onLobbyMsg(m){if(!m||typeof m.i!=='string'||m.i===NET.id)return;if(m.t==='h')lobby.set(m.i,Date.now());else if(m.t==='c')onChat(m)}
+function chatOpen(){chatOn=1;netSub(CHAT_T,onLobbyMsg);netConnect();chatHello();clearInterval(net.lh);net.lh=setInterval(chatHello,8000)}
+function chatClose(){chatOn=0;clearInterval(net.lh);netUnsub(CHAT_T)}
+setInterval(()=>{if(pg==='lobby'&&$('lpl'))$('lpl').innerHTML=lobbyHtml()},1500);
+$('ct').addEventListener('pointerdown',()=>{const p=$('cp');p.style.display=p.style.display==='block'?'none':'block';if(p.style.display==='block')$('ci').focus()});
+$('cx').addEventListener('pointerup',()=>{$('cp').style.display='none';$('ci').blur()});
+const sendPanel=()=>{const i=$('ci');if(chatSend(i.value))i.value=''};$('cs').addEventListener('pointerup',sendPanel);$('ci').addEventListener('keydown',e=>{if(e.key==='Enter')sendPanel()});
+QP.forEach(q=>{const d=document.createElement('div');d.className='cd';d.style.cssText='min-width:0;margin:0;padding:5px 8px;font-size:12px';d.textContent=q;d.addEventListener('pointerup',()=>chatSend(q));$('cq').appendChild(d)});
 // ---------- loop ----------
 let last=performance.now(),cyaw=0,fr=0,fr2=0,oa=0,fa=0,fn=0,vo=0,ldN=0;
 function frame(now){requestAnimationFrame(frame);let dt=Math.min(.05,(now-last)/1e3);if(paused)dt=0;last=now;const t=now/1e3;fa+=dt;fn++;if(ldN<4&&++ldN==4)setTimeout(()=>{const l=$('ld');if(l){l.style.opacity=0;setTimeout(()=>l.remove(),700)}},500);if(fa>=2){const fps=fn/fa;fa=fn=0;if(playing&&t>8&&SV.auto&&fps<38&&SV.q>0){SV.q--;save();applySet();say('کیفیت خودکار کاهش یافت',2)}}
-if(playing){stepP(dt);vert(dt)}upd();{let n=first?999:2;first=0;while(bq.length&&n--){const[i,j]=bq.shift(),q=i+','+j;if(blocks.has(q)){const m=mkBlock(i,j);blocks.set(q,m);sc.add(m)}}}sky(dt);gr.position.set(P.x,0,P.z);weather(dt);sigs(t,dt);stepPeds(dt,t);stepSmoke(dt);redCheck(t);fxs(dt,t);trk(dt);copsFx(dt,t);ghostStep(dt);if(fmOpen&&!playing)closeMap();if(playing&&P.slip>.22&&Math.abs(P.v)>10)skid(dt);
+if(playing&&frozen<=0){stepP(dt);vert(dt)}else if(playing){frozen-=dt;P.v=0;P.steer=0}upd();{let n=first?999:2;first=0;while(bq.length&&n--){const[i,j]=bq.shift(),q=i+','+j;if(blocks.has(q)){const m=mkBlock(i,j);blocks.set(q,m);sc.add(m)}}}sky(dt);gr.position.set(P.x,0,P.z);weather(dt);sigs(t,dt);stepPeds(dt,t);stepSmoke(dt);redCheck(t);fxs(dt,t);trk(dt);copsFx(dt,t);ghostStep(dt);if(fmOpen&&!playing)closeMap();netStep(dt,t);if(mis=='net'||mis=='netrace')heat=0;if(playing&&P.slip>.22&&Math.abs(P.v)>10)skid(dt);
 let near=1e9;for(let i=0;i<ais.length;i++){const a=ais[i];if(a.off||a.lim||dt<=0)continue;for(let j=i+1;j<ais.length;j++){const b2=ais[j];if(b2.off||b2.lim||a.stun>0||b2.stun>0)continue;const ddx=a.vx-b2.vx,ddz=a.vz-b2.vz;if(ddx*ddx+ddz*ddz<7.5){a.stun=b2.stun=.9;a.sp*=.2;b2.sp*=.2;if(Math.random()<.6)honk(a.vx,a.vz)}}}
 for(const o of ais){const d=stepAI(o,dt,t);if(o.cop)near=Math.min(near,d)}
 if(playing){if(Math.abs(P.v)>30)heat=Math.min(100,heat+6*dt);else if(near>70)heat=Math.max(0,heat-3*dt/(heliOn?3:1))}
-if(playing&&heat>20&&near<7&&Math.abs(P.v)<9){bust+=dt;if(bust>1.6){bust=0;if(mis=='free')caught();else endGame(0,'پلیس دستگیرت کرد')}}else bust=Math.max(0,bust-dt);
+if(playing&&heat>20&&near<7&&Math.abs(P.v)<9){bust+=dt;if(bust>1.6){bust=0;if(FRM())caught();else endGame(0,'پلیس دستگیرت کرد')}}else bust=Math.max(0,bust-dt);
 if(playing){tleft-=dt;
-if(mis=='free')freeLogic(dt);else if(mis=='esc'){score+=dt*10;heat=Math.max(heat,40);if(tleft<=0)endGame(1,'تا آخر دوام آوردی')}
+if(mis=='free'||mis=='net')freeLogic(dt);else if(mis=='netrace')netRaceLogic(dt);else if(mis=='esc'){score+=dt*10;heat=Math.max(heat,40);if(tleft<=0)endGame(1,'تا آخر دوام آوردی')}
 else{score+=Math.abs(P.v)*dt*.15;const dx=tgt[0]-P.x,dz=tgt[1]-P.z,dg=Math.hypot(dx,dz);
 if(dg<12)take(0);else if(mis=='race')for(let i=0;i<3&&playing;i++)if(Math.hypot(rac[i].p[0]-tgt[0],rac[i].p[1]-tgt[1])<14)take(i+1);
 if(playing&&tleft<=0)endGame(0,'زمان تمام شد');
 $('ar').style.transform='rotate('+(-wr(Math.atan2(dx,dz)-P.h))+'rad)';$('dist').textContent=Math.round(dg)+' m'}
-if(mis!='free')$('info').textContent='⏱ '+Math.max(0,Math.ceil(tleft))+(mis=='esc'?'':mis=='race'?' | 🏁 '+cpN+'-'+Math.max(rs[0],rs[1],rs[2]):' | 🏁 '+cpN+'/'+GL)+' | ⭐ '+Math.round(score);$('hp').style.width=health+'%';$('hp').style.background=health>50?'#3be07a':health>25?'#ffc83c':'#ff4a3c'}
+if(!FRM())$('info').textContent='⏱ '+Math.max(0,Math.ceil(tleft))+(mis=='esc'?'':mis=='race'?' | 🏁 '+cpN+'-'+Math.max(rs[0],rs[1],rs[2]):' | 🏁 '+cpN+'/'+GL)+' | ⭐ '+Math.round(score);$('hp').style.width=health+'%';$('hp').style.background=health>50?'#3be07a':health>25?'#ffc83c':'#ff4a3c'}
 document.body.classList.toggle('mn',!playing);
 $('arr').style.display=playing&&mis!='esc'?'block':'none';$('mm').style.display=playing?'block':'none';$('nit').textContent='🔥'+Math.round(nitE);if(playing&&(fr2++&1)==0)drawMM(t);
 me.g.position.set(P.x,P.y,P.z);me.g.rotation.set(P.pitch-Math.atan2(P.air?P.vy:P.rv,Math.max(8,Math.abs(P.v))),P.h,P.steer*Math.min(1,Math.abs(P.v)/30)*.05);
