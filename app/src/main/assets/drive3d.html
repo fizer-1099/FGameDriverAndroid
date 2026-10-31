@@ -14,7 +14,7 @@ canvas{display:block}
 #spd{left:50%;transform:translateX(-50%);font-size:28px;font-weight:700;min-width:130px;text-align:center}
 #spd small{font-size:12px;font-weight:400;opacity:.7}
 #heat{left:14px;color:#ffc83c;letter-spacing:2px}
-#cam{right:14px}#tl{right:86px}#tm{right:160px}#home{right:262px}
+#tb{position:fixed;right:14px;top:max(10px,env(safe-area-inset-top));display:flex;gap:8px;z-index:6}#tb .t{position:static}
 .on{background:#ff9a3cd0}
 #info,#arr{pointer-events:none}
 #info{direction:ltr;unicode-bidi:isolate}
@@ -39,12 +39,11 @@ canvas{display:block}
 #rot{display:none;position:fixed;left:0;top:0;right:0;bottom:0;z-index:99999;background:#070b1cf2;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:18px;text-align:center}
 @media (orientation:portrait){#rot{display:flex}}
 </style></head><body>
-<div id="ld"><div class="lg">🚗 اف‌گیم درایور ۳D</div><div class="bar"><i></i></div><small id="tip"></small></div><div id="rot"><div style="font-size:54px">📱↻</div>لطفاً گوشی را افقی نگه دارید</div>
+<div id="ld"><div class="lg">🚗 اف‌گیم درایور ۳D</div><div class="bar"><i></i></div><small id="tip"></small><small style="opacity:.6">ساخته‌شده توسط نوید بلانیان</small></div><div id="rot"><div style="font-size:54px">📱↻</div>لطفاً گوشی را افقی نگه دارید</div>
 <script>document.getElementById("tip").textContent=["با نیترو سرعتت بیشتر می‌شود","از پلیس فرار کن؛ با سه ستاره سد راه می‌گذارند","روی رمپ‌ها بپر","زیر باران ماشین لیز می‌خورد","میخ‌های پلیس لاستیک را پنچر می‌کنند","در حالت آزاد، تعمیرگاه 🔧 ماشین را درست می‌کند"][Math.floor(Math.random()*6)]</script>
 <div class="t" id="heat">☆☆☆☆☆</div>
 <div class="t" id="spd">0 <small>km/h</small> <b id="grt">D</b></div>
-<a class="t" id="home" href="index.html">بازی ۲D</a>
-<div class="t" id="tm">زمان: خودکار</div><div class="t" id="tl">فرمان گوشی</div><div class="t" id="pz" style="left:132px">⏸</div><div class="t" id="cam">دوربین</div>
+<div class="t" id="pz" style="left:132px">⏸</div><div id="tb"><div class="t" id="cam">دوربین</div><div class="t" id="tl">فرمان گوشی</div><div class="t" id="tm">زمان: خودکار</div><a class="t" id="home" href="index.html">بازی ۲D</a></div>
 <div class="t" id="info" style="top:56px;left:50%;transform:translateX(-50%)">⏱ 0 | 🏁 0/8 | ⭐ 0</div>
 <div class="t" id="hpw" style="left:14px;top:52px;width:90px;padding:4px"><div id="hp" style="height:8px;background:#3be07a;border-radius:6px;width:100%"></div></div>
 <div class="t" id="arr" style="left:50%;top:96px;transform:translateX(-50%);text-align:center"><div id="ar" style="font-size:30px;line-height:30px;color:#39ff88">▲</div><span id="dist"></span></div>
@@ -64,7 +63,7 @@ canvas{display:block}
 <div class="b" id="rv">دنده<br>عقب</div><div class="b" id="hn" style="left:202px;bottom:18px;font-size:22px">📢</div><div class="b" id="hb" style="left:112px;bottom:104px;font-size:12px">ترمز دستی</div><div class="b" id="nit" style="left:22px;bottom:104px;font-size:15px;background:#b8480fcc">🔥100</div><div class="b" id="brk">ترمز</div><div class="b" id="gas">گاز</div>
 <script type="module">
 import * as T from './3d/three.module.js';
-let RAD=4;const C=60,R=8,LANE=4,DIRS=[[1,0],[-1,0],[0,1],[0,-1]];
+const VER='2.0.0',SHOW_2D=false,CHAT_PUBLIC=true;let RAD=4;const C=60,R=8,LANE=4,DIRS=[[1,0],[-1,0],[0,1],[0,-1]];
 const $=id=>document.getElementById(id);
 let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
 const hr=(i,j,k)=>{let h=Math.imul(i+1013,374761393)^Math.imul(j+7919,668265263)^Math.imul(k+31,1274126177);h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967296};
@@ -385,17 +384,18 @@ if(m=='race')rac.forEach(c=>c.stun=2.5);say(MIS[m][2],3)}
 const ov=$('ov'),QN=['پایین','متوسط','بالا'];
 const B=(a,t,c,v)=>'<div class="bt '+(c||'')+'" data-a="'+a+'" data-v="'+(v===undefined?'':v)+'">'+t+'</div>',top=()=>'<div style="font-size:14px;margin:4px">🏅 سطح '+lvOf(SV.xp)+' &nbsp; 💰 '+SV.money+' &nbsp; ⭐ بهترین '+SV.best+'</div>';
 function page(n,x){if(pg==='chat'&&n!=='chat')chatClose();if(n==='chat'&&pg!=='chat')chatOpen();pg=n;let h='';
-if(n=='main')h='<h2 style="margin:6px">اف‌گیم درایور ۳D</h2>'+top()+B('camp','مأموریت‌های داستانی')+B('daily','چالش روزانه'+(SV.daily==today()?' ✅':''),'g')+B('online','🌐 آنلاین (چندنفره و چت)')+B('go','حالت آزاد','g','free')+B('mis','مأموریت سریع','g')+B('gar','گاراژ','g')+B('top','رکوردها','g')+B('ach','دستاوردها','g')+B('tut','آموزش','g')+B('set','تنظیمات','g')+'<a class="bt g" href="index.html" style="text-decoration:none">بازی ۲D</a>';
+if(n=='main')h='<h2 style="margin:6px">اف‌گیم درایور ۳D</h2>'+top()+B('camp','مأموریت‌های داستانی')+B('daily','چالش روزانه'+(SV.daily==today()?' ✅':''),'g')+B('online','🌐 آنلاین (چندنفره و چت)')+B('go','حالت آزاد','g','free')+B('mis','مأموریت سریع','g')+B('gar','گاراژ','g')+B('top','رکوردها','g')+B('ach','دستاوردها','g')+B('tut','آموزش','g')+B('set','تنظیمات','g')+(SHOW_2D?'<a class="bt g" href="index.html" style="text-decoration:none">بازی ۲D</a>':'')+B('about','ℹ️ دربارهٔ بازی','g')+'<div style="font-size:11px;opacity:.7;margin:6px">ساخته‌شده توسط نوید بلانیان · نسخهٔ '+VER+'</div>';
 else if(n=='camp')h=top()+STG.map((g,i)=>{const lk=i>0&&!SV.camp[i-1],st=SV.camp[i]||0;return '<div class="bt'+(lk?' g':'')+'" data-a="'+(lk?'lock':'stg')+'" data-v="'+i+'" style="display:flex;justify-content:space-between"><span>'+(lk?'🔒 ':'')+(i+1)+'. '+g.n+' <small>('+MIS[g.m][0]+')</small></span><span>'+'⭐'.repeat(st)+'</span></div>'}).join('')+B('main','بازگشت','g');
 else if(n=='daily'){const d=dailyStage(),dn=SV.daily==today();h=top()+'<div style="margin:6px;line-height:1.9;font-size:14px"><b>'+MIS[d.m][0]+'</b><br>هدف: '+(d.m=='esc'?d.d+' ثانیه':d.g+' نقطه')+(d.wx==2?' | 🌧️ باران':'')+(d.tod==2?' | 🌙 شب':'')+'<br>'+(dn?'✅ جایزهٔ امروز را گرفتی':'🎁 جایزهٔ دو برابر')+'</div>'+B('dstart',dn?'دوباره (بدون جایزهٔ ویژه)':'شروع چالش')+B('main','بازگشت','g')}
 else if(n=='ach')h=top()+ACH.map(a=>{const d=SV.ach.includes(a.id);return '<div class="row" style="'+(d?'':'opacity:.55')+'"><span>'+(d?'🏆 ':'🔒 ')+'<b>'+a.n+'</b><br><small>'+a.d+'</small></span><span>💰 '+a.r+'</span></div>'}).join('')+'<div style="font-size:12px;margin:8px;opacity:.8">'+Math.round(SV.stat.km*10)/10+' کیلومتر · '+SV.stat.jumps+' پرش · '+Math.round(SV.stat.drift)+' ثانیه دریفت</div>'+B('main','بازگشت','g');
 else if(n=='cust')h=top()+Object.keys(CZ).map(k=>{const cur=(SV.cz[SV.car]||{})[k]||0;return '<div style="margin:6px 4px;text-align:right;font-size:13px">'+CZ[k][0]+'</div><div class="sc">'+CZ[k][1].map((nm,i)=>{const pr=CZ[k][2][i],ow=!pr||SV.cown.includes(SV.car+':'+k+i);return '<div class="cd'+(cur==i?' sel':'')+'" data-a="cz" data-v="'+k+':'+i+'" style="min-width:84px">'+nm+'<br>'+(cur==i?'✔':ow?'مال شما':'💰 '+pr)+'</div>'}).join('')+'</div>'}).join('')+B('gar','بازگشت','g');
-else if(n=='online')h=top()+'<div style="margin:4px;font-size:13px">👤 '+esc(nick())+(navigator.onLine?'':' &nbsp; ⚠️ اینترنت قطع است')+'</div>'+B('nmk','🏠 ساخت اتاق (رانندگی آزاد)')+B('nrk','🏁 ساخت اتاق (مسابقه)','g')+B('njn','🔑 پیوستن با کد اتاق','g')+B('npub','🌍 اتاق عمومی (همه با هم)','g')+B('chat','💬 گفتگوی عمومی','g')+B('nname','✏️ تغییر نام','g')+B('main','بازگشت','g');
+else if(n=='online')h=top()+'<div style="margin:4px;font-size:13px">👤 '+esc(nick())+(navigator.onLine?'':' &nbsp; ⚠️ اینترنت قطع است')+'</div>'+B('nmk','🏠 ساخت اتاق (رانندگی آزاد)')+B('nrk','🏁 ساخت اتاق (مسابقه)','g')+B('njn','🔑 پیوستن با کد اتاق','g')+B('npub','🌍 اتاق عمومی (همه با هم)','g')+(CHAT_PUBLIC?B('chat','💬 گفتگوی عمومی','g'):'')+B('nname','✏️ تغییر نام','g')+B('main','بازگشت','g');
 else if(n=='njn')h='<div style="margin:6px">کد اتاق را وارد کن</div><input id="jc" maxlength="8" autocomplete="off" style="width:60%;padding:10px;border-radius:10px;border:1px solid #fff4;background:#111a33;color:#fff;font-size:20px;letter-spacing:4px;text-align:center;text-transform:uppercase">'+B('njgo','ورود')+B('online','بازگشت','g');
 else if(n=='nname')h='<div style="margin:6px">نام نمایشی (۲ تا ۱۴ حرف)</div><input id="ni" maxlength="14" autocomplete="off" value="'+esc(nick())+'" style="width:70%;padding:10px;border-radius:10px;border:1px solid #fff4;background:#111a33;color:#fff;font-size:18px;text-align:center">'+B('nsave','ذخیره')+B('online','بازگشت','g');
 else if(n=='wait')h='<div style="margin:14px;font-size:16px">⏳ در حال اتصال به اتاق '+esc(net.room)+'…</div>'+B('nleave','انصراف','g');
 else if(n=='lobby')h='<h2 style="margin:6px">🏁 اتاق مسابقه</h2><div style="font-size:24px;letter-spacing:4px;margin:4px">'+esc(net.room)+'</div><div style="font-size:12px;opacity:.8;margin-bottom:4px">این کد را به دوستانت بده تا از «پیوستن با کد» وارد شوند</div><div id="lpl">'+lobbyHtml()+'</div>'+(net.host?B('nstart','🚦 شروع مسابقه'):'<div style="margin:8px;font-size:13px">⏳ منتظر شروع میزبان…</div>')+B('nleave','خروج از اتاق','g');
 else if(n=='chat')h='<div style="font-size:12px;opacity:.8;margin:4px">👥 '+([...lobby.values()].filter(t=>Date.now()-t<20000).length+1)+' نفر آنلاین · پیام‌ها عمومی‌اند؛ اطلاعات شخصی ننویس. روی اسم بزن تا بی‌صدا شود.</div><div id="clog" style="height:96px;overflow-y:auto;background:#0b1024aa;border-radius:10px;margin:4px;touch-action:pan-y">'+chatHtml()+'</div><div style="display:flex;gap:6px;margin:4px"><input id="cti" maxlength="140" autocomplete="off" placeholder="پیام…" style="flex:1;padding:8px;border-radius:10px;border:1px solid #fff4;background:#111a33;color:#fff;font-size:15px"><div class="bt" data-a="csend" style="margin:0;padding:8px 14px">ارسال</div></div>'+quickHtml()+B('online','بازگشت','g');
+else if(n=='about')h='<h2 style="margin:6px">اف‌گیم درایور ۳D</h2><div style="line-height:2;font-size:14px;padding:4px 10px;text-align:right"><b>سازنده:</b> نوید بلانیان<br><b>نسخه:</b> '+VER+'<br>بازی رانندگی سه‌بعدی با شهر بی‌انتها، پلیس، مأموریت، مسابقه، شخصی‌سازی ماشین و حالت آنلاین.<br><b>حریم خصوصی:</b> حسابی ساخته نمی‌شود و اطلاعات شخصی گرفته نمی‌شود. پیشرفت بازی فقط روی همین دستگاه ذخیره می‌شود. در حالت آنلاین فقط نام نمایشی، ماشین، موقعیت و پیام‌های چت از طریق سرورهای عمومی پیام‌رسان ارسال می‌شود.<br><small>موتور گرافیکی: three.js (مجوز MIT)</small></div>'+B('main','بازگشت','g');
 else if(n=='pause')h='<h2 style="margin:6px">⏸ مکث</h2>'+B('resume','ادامه')+B('photo','📷 حالت عکس','g')+B('quit','خروج به منو','g');
 else if(n=='mis')h=top()+Object.keys(MIS).filter(k=>k!='net'&&k!='netrace').map(k=>B('go','<b>'+MIS[k][0]+'</b><br><small>'+MIS[k][1]+'</small>','',k)).join('')+B('main','بازگشت','g');
 else if(n=='gar')h=top()+'<div class="sc">'+CARS.map(c=>'<div class="cd'+(c.id==SV.car?' sel':'')+'" data-a="car" data-v="'+c.id+'"><b>'+c.n+'</b><br>'+(SV.owned.includes(c.id)?(c.id==SV.car?'انتخاب‌شده':'مال شما'):(lvOf(SV.xp)<c.lv?'🔒 سطح '+c.lv:'💰 '+c.p))+'<br>🚀'+c.vm+' ⚡'+c.ac+'</div>').join('')+'</div>'
@@ -406,9 +406,9 @@ else if(n=='set')h=[['کیفیت گرافیک',QN[SV.q],'q'],['آینه‌ها',
 else if(n=='tut')h='<div style="text-align:right;line-height:2;font-size:14px;padding:6px 10px">🟢 <b>گاز</b> و 🔴 <b>ترمز</b> سمت راست؛ دکمهٔ <b>دنده عقب</b> را نگه دار تا ماشین عقب برود.<br>◀ ▶ فرمان؛ یا «فرمان گوشی» را بزن و گوشی را مثل فرمان بچرخان.<br>🔥 نیترو شتاب می‌دهد، «ترمز دستی» برای دریفت است و 📢 بوق.<br>🎥 دکمهٔ «دوربین» بین نمای بیرون و داخل ماشین عوض می‌کند.<br>🟩 به دایره‌های سبز برس. 🚓 سرعت بالا، تصادف، رد شدن از چراغ قرمز یا زدن به عابر، پلیس را تحریک می‌کند.<br>❤️ نوار سبز بالا سلامت ماشین و ★ سطح تعقیب پلیس است.</div>'+B('pend','متوجه شدم، شروع');
 else if(n=='top')h=Object.keys(MIS).filter(k=>k!='net'&&k!='netrace').map(k=>'<div class="row"><b>'+MIS[k][0]+'</b><span>'+((SV.top[k]||[]).join(' · ')||'—')+'</span></div>').join('')+B('main','بازگشت','g');
 else if(n=='end'){const nx=curStage>=0&&x.win&&curStage+1<STG.length;h='<h2 style="margin:6px">'+(x.win?'برنده شدی! 🏆':'باختی')+'</h2><div style="margin:4px;font-size:15px">'+x.why+'<br>'+(x.st?'⭐'.repeat(x.st)+'<br>':'')+'امتیاز '+Math.round(score)+' &nbsp; 💰 +'+x.rw+' &nbsp; ✨ '+x.xg+' XP'+(x.lvUp?'<br>'+x.lvUp:'')+(x.gt?'<br>⏱ '+x.gt+' ثانیه'+(x.nb?' 🏆 رکورد جدید!':''):'')+'<br>🏅 '+x.L.join(' · ')+'</div>'+(nx?B('stg','مرحلهٔ بعد','',curStage+1):'')+(mis=='netrace'?B('online','🌐 بازگشت به آنلاین'):B(dailyRun?'dstart':curStage>=0?'stg':'go','دوباره','',curStage>=0?curStage:mis))+B('main','منو','g')}
-const TT={online:'آنلاین',njn:'پیوستن',nname:'نام نمایشی',wait:'اتصال',lobby:'اتاق',chat:'گفتگوی عمومی',cust:'شخصی‌سازی',ach:'دستاوردها',camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="'+(n=='cust'?'gar':['njn','nname','chat','lobby','wait'].includes(n)?'online':'main')+'" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';pgT=performance.now();ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
+const TT={about:'دربارهٔ بازی',online:'آنلاین',njn:'پیوستن',nname:'نام نمایشی',wait:'اتصال',lobby:'اتاق',chat:'گفتگوی عمومی',cust:'شخصی‌سازی',ach:'دستاوردها',camp:'مأموریت‌های داستانی',daily:'چالش روزانه',tut:'آموزش',mis:'مأموریت',gar:'گاراژ',set:'تنظیمات',top:'رکوردها'},bk2=n=='main'||n=='end'||n=='pause'?'':'<div class="bt g" data-a="'+(n=='cust'?'gar':['njn','nname','chat','lobby','wait'].includes(n)?'online':'main')+'" style="margin:0;padding:6px 14px;font-size:15px">◀ بازگشت</div>';pgT=performance.now();ov.innerHTML='<div class="pn"><div class="hd"><b>'+(TT[n]||'')+'</b>'+bk2+'</div><div class="bd">'+h+'</div></div>';ov.style.display='flex'}
 function act(a,v){aud();
-if(a=='main'||a=='mis'||a=='gar'||a=='set'||a=='top'||a=='camp'||a=='daily'||a=='cust'||a=='ach'||a=='njn'||a=='nname'||a=='chat')page(a);
+if(a=='main'||a=='mis'||a=='gar'||a=='set'||a=='top'||a=='camp'||a=='daily'||a=='cust'||a=='ach'||a=='njn'||a=='nname'||a=='chat'||a=='about')page(a);
 else if(a=='online'){netLeave();page('online')}
 else if(a=='nmk'){const c=genCode();netJoin(c,1,'free');startGame('net');say('کد اتاق: '+c,5)}
 else if(a=='nrk'){netJoin(genCode(),1,'race');page('lobby')}
@@ -425,6 +425,7 @@ else if(a=='car'){const c=CARS.find(x=>x.id==v);if(!SV.owned.includes(v)){if(lvO
 else if(a=='col'){SV.col[SV.car]=+v;save();setCar();page('gar')}
 else if(a=='up'){const k=SV.car+':'+v,l=SV.up[k]||0,cost=1500*(l+1);if(l>=3)return;if(SV.money<cost){say('پول کافی نیست',1.5);return}SV.money-=cost;SV.up[k]=l+1;save();stats();page('gar')}
 else if(a=='s'){if(v=='q')SV.q=(SV.q+1)%3;else if(v=='vol'){const o=[1,.5,0];SV.vol=o[(o.indexOf(SV.vol)+1)%3]}else if(v=='sens')SV.sens=SV.sens==1?1.4:SV.sens>1?.7:1;else if(v=='wx')SV.wx=(SV.wx+1)%4;else if(v=='bs'||v=='bo'||v=='diff'||v=='th'){SV[v]=(SV[v]+1)%3;if(v=='th')setTheme(SV.th)}else SV[v]^=1;save();applySet();page('set')}}
+if(!SHOW_2D){const hm=$('home');if(hm)hm.remove()}
 $('pz').addEventListener('pointerdown',()=>{if(playing&&!paused){paused=1;page('pause')}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing&&!paused){paused=1;page('pause')}});
 let pd0=null;ov.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-a]');pd0=b?{b,x:e.clientX,y:e.clientY,t:performance.now()}:null});
@@ -537,7 +538,7 @@ const up=e=>pts.delete(e.pointerId);cv.addEventListener('pointerup',up);cv.addEv
 // ---------- themes + living world helpers ----------
 const THM=[{tints:[0xb9b2a8,0x9aa3b5,0xc7a58a,0x8b8f99,0xa8b59a],slab:0x666a7a,ground:0x2a2c37,day:0x8ec5ff,gr:1,tree:[0x4a3526,0x2f6b3a]},{tints:[0xd8b98a,0xc9a06b,0xe3c9a0,0xb98f5a,0xd2a679],slab:0xb89c6e,ground:0x4a3f33,day:0xf0d6a4,gr:.85,tree:[0x6b4a2a,0x5d8a3a]},{tints:[0xe8eef5,0xcfd9e6,0xdde6ee,0xbfcad8,0xf4f7fa],slab:0xdfe6ee,ground:0x7c8594,day:0xcfe0f2,gr:.65,tree:[0x4a3526,0xe9f2f7]}];let TH=0;
 function setTheme(i){if(i===TH)return;TH=i;const t=THM[i];tints.forEach((c,k)=>c.set(t.tints[k]));GR.set(t.slab);gr.material.color.set(t.ground);DAY.set(t.day);BRN.set(t.tree[0]);GRN.set(t.tree[1]);
-for(const m of blocks.values())if(m){sc.remove(m);m.geometry.dispose();m.children.forEach(c=>c.geometry.dispose())}blocks.clear();bq.length=0;bk=''}
+for(const m of blocks.values())if(m){sc.remove(m);m.geometry.dispose();m.children.forEach(c=>c.geometry.dispose())}blocks.clear();bq.length=0;bk='';first=1}
 const crPos=[];function honk(x,z){if(!au)return;const d=Math.hypot(x-P.x,z-P.z);if(d>60)return;const o=au.createOscillator(),g=au.createGain(),t0=au.currentTime;o.type='square';o.frequency.value=420+Math.random()*80;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(Math.max(.0002,.06*SV.vol*(1-d/60)),t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+.35);o.connect(g);g.connect(au.destination);o.start();o.stop(t0+.4)}
 // ---------- full map ----------
 const fmE=$('fm'),fc=$('fmc'),fq=fc.getContext('2d');let fmOpen=0,fk=.5,fcx=0,fcz=0;
@@ -637,6 +638,16 @@ $('ct').addEventListener('pointerdown',()=>{const p=$('cp');p.style.display=p.st
 $('cx').addEventListener('pointerup',()=>{$('cp').style.display='none';$('ci').blur()});
 const sendPanel=()=>{const i=$('ci');if(chatSend(i.value))i.value=''};$('cs').addEventListener('pointerup',sendPanel);$('ci').addEventListener('keydown',e=>{if(e.key==='Enter')sendPanel()});
 QP.forEach(q=>{const d=document.createElement('div');d.className='cd';d.style.cssText='min-width:0;margin:0;padding:5px 8px;font-size:12px';d.textContent=q;d.addEventListener('pointerup',()=>chatSend(q));$('cq').appendChild(d)});
+// ---------- Android back button ----------
+let exitArm=0;
+window.fgPause=()=>{if(playing&&!paused&&!fmOpen&&!photo){paused=1;page('pause')}};
+window.fgBack=()=>{if($('ld'))return true;if(fmOpen){closeMap();return true}if(photo){$('phx').dispatchEvent(new Event('pointerdown'));return true}
+const cp=$('cp');if(cp&&cp.style.display==='block'){cp.style.display='none';return true}
+if(playing&&!paused){paused=1;page('pause');return true}
+if(playing&&paused&&pg==='pause'){act('resume');return true}
+if(!playing&&pg!=='main'){if(['njn','nname','chat','lobby','wait'].includes(pg))act('online');else if(pg==='cust')page('gar');else page('main');return true}
+if(!exitArm){exitArm=1;say('برای خروج، یک بار دیگر «بازگشت» را بزنید',1.8);setTimeout(()=>exitArm=0,2000);return true}
+return false};
 // ---------- loop ----------
 let last=performance.now(),cyaw=0,fr=0,fr2=0,oa=0,fa=0,fn=0,vo=0,ldN=0;
 function frame(now){requestAnimationFrame(frame);let dt=Math.min(.05,(now-last)/1e3);if(paused)dt=0;last=now;const t=now/1e3;fa+=dt;fn++;if(ldN<4&&++ldN==4)setTimeout(()=>{const l=$('ld');if(l){l.style.opacity=0;setTimeout(()=>l.remove(),700)}},500);if(fa>=2){const fps=fn/fa;fa=fn=0;if(playing&&t>8&&SV.auto&&fps<38&&SV.q>0){SV.q--;save();applySet();say('کیفیت خودکار کاهش یافت',2)}}
@@ -677,6 +688,6 @@ $('spd').firstChild.nodeValue=Math.round(Math.abs(P.v)*3.6)+' ';
 const n=Math.ceil(heat/20);$('heat').textContent='★'.repeat(n)+'☆'.repeat(5-n);
 if(msgT>0&&(msgT-=dt)<=0)$('msg').style.display='none';
 ren.render(sc,cam)}
-setGear();applySet();setCar();page('main');requestAnimationFrame(frame);
+setGear();applySet();setTheme(SV.th);setCar();page('main');requestAnimationFrame(frame);
 </script>
 <div id="ov"></div></body></html>
