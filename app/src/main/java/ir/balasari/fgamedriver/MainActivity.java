@@ -89,6 +89,12 @@ public class MainActivity extends Activity {
             super.onBackPressed();
             return;
         }
+        String cur = webView.getUrl();
+        if (cur != null && !cur.contains("drive3d.html")) {
+            // inside the old 2D game: Back returns to the 3D game menu
+            if (webView.canGoBack()) webView.goBack(); else webView.loadUrl(START_URL);
+            return;
+        }
         webView.evaluateJavascript("(window.fgBack?window.fgBack():false)", new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String value) {
